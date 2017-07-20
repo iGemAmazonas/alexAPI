@@ -14,4 +14,4 @@ Para rodar o projeto faça:
 node index
 ```
 
-Acesse a página inicial do projeto através de http://localhost:3000/
+Acesse a página inicial do projeto através de http://localhost:7000/
