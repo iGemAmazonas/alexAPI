@@ -1,6 +1,9 @@
 # Dependency directories
 node_modules/
+<<<<<<< HEAD
 # Tern module for Atom
 .tern-project
 npm-debug.log
 alex-api.sqlite
+=======
+>>>>>>> 4dd92b541f4041c91fecab4066ad695b83eb132c
