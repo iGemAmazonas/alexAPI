@@ -8,10 +8,16 @@ Primeiramente clone este projeto para uma pasta. Assegure-se de que você já te
 npm install
 ```
 
+Para rodar os teste execute:
+
+```
+npm run test-integration
+```
+
 Para rodar o projeto faça:
 
 ```
-node index
+node start
 ```
 
 Acesse a página inicial do projeto através de http://localhost:7000/
