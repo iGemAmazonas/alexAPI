@@ -17,7 +17,7 @@ npm run test-integration
 Para rodar o projeto faça:
 
 ```
-node start
+npm start
 ```
 
 Acesse a página inicial do projeto através de http://localhost:7000/
