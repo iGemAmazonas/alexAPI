@@ -11,7 +11,7 @@ npm install
 Para rodar os teste execute:
 
 ```
-npm run test-integration
+npm run test
 ```
 
 Para rodar o projeto faça:

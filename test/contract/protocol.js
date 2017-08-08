@@ -3,18 +3,18 @@ describe('Routes Protocols', () => {
   const protocolList = [
     {
       id: 1,
-      title: 'Default Protocol',
+      title: 'Test Protocol',
       description: 'Default Protocol Description',
     },
     {
       id: 2,
-      title: 'Protocol 2',
-      description: 'Protocol 2 Description',
+      title: 'Test Protocol 2',
+      description: 'Test Protocol 2 Description',
     },
     {
       id: 3,
-      title: 'Protocol 3',
-      description: 'Protocol 3 Description',
+      title: 'Test Protocol 3',
+      description: 'Test Protocol 3 Description',
     },
   ];
 
@@ -24,16 +24,25 @@ describe('Routes Protocols', () => {
       .then(() => Protocol.bulkCreate(protocolList))
       .then(() => done());
   });
+  afterEach((done) => {
+    Protocol
+      .destroy({ where: {} })
+      .then(() => done());
+  });
 
   describe('Route GET /protocol', () => {
     it('should return a list of all protocols', (done) => {
+      const joiProtocolList = Joi.array().items(Joi.object().keys({
+        id: Joi.number(),
+        title: Joi.string(),
+        description: Joi.string(),
+        created_at: Joi.date().iso(),
+        updated_at: Joi.date().iso(),
+      }));
       request
         .get('/protocol')
         .end((err, res) => {
-          expect(res.body[0].id).to.be.eql(protocolList[0].id);
-          expect(res.body[0].title).to.be.eql(protocolList[0].title);
-          expect(res.body[0].description).to.be.eql(protocolList[0].description);
-
+          joiAssert(res.body, joiProtocolList);
           done(err);
         });
     });
@@ -41,35 +50,31 @@ describe('Routes Protocols', () => {
 
   describe('Route GET /protocol/{id}', () => {
     it('should return a protocol', (done) => {
+      const joiProtocol = Joi.object().keys({
+        id: Joi.number(),
+        title: Joi.string(),
+        description: Joi.string(),
+        created_at: Joi.date().iso(),
+        updated_at: Joi.date().iso(),
+      });
       request
         .get('/protocol/1')
         .end((err, res) => {
-          expect(res.body.id).to.be.eql(protocolList[0].id);
-          expect(res.body.title).to.be.eql(protocolList[0].title);
-          expect(res.body.description).to.be.eql(protocolList[0].description);
-
+          joiAssert(res.body, joiProtocol);
           done(err);
         });
     });
   });
-/*
-  describe('Route GET /protocols/{id}', () => {
-    it('should return a protocol with matched filter opt', done => {
 
-      request
-        .get('/protocols/1')
-        .end((err, res) => {
-          expect(res.body.id).to.be.eql(protocolList[0].id);
-          expect(res.body.title).to.be.eql(protocolList[0].title);
-          expect(res.body.description).to.be.eql(protocolList[0].description);
-
-          done(err);
-        });
-    });
-  });
-*/
   describe('Route POST /protocol', () => {
     it('should create a protocol', (done) => {
+      const joiProtocol = Joi.object().keys({
+        id: Joi.number(),
+        title: Joi.string(),
+        description: Joi.string(),
+        created_at: Joi.date().iso(),
+        updated_at: Joi.date().iso(),
+      });
       const newProtocol = {
         id: 4,
         title: 'New Protocol',
@@ -79,9 +84,7 @@ describe('Routes Protocols', () => {
         .post('/protocol')
         .send(newProtocol)
         .end((err, res) => {
-          expect(res.body.id).to.be.eql(newProtocol.id);
-          expect(res.body.title).to.be.eql(newProtocol.title);
-          expect(res.body.description).to.be.eql(newProtocol.description);
+          joiAssert(res.body, joiProtocol);
           done(err);
         });
     });
@@ -89,6 +92,7 @@ describe('Routes Protocols', () => {
 
   describe('Route PUT /protocol/{id}', () => {
     it('should update a protocol', (done) => {
+      const joiUpdatedCount = Joi.array().items(1);
       const updatedProtocol = {
         id: 1,
         title: 'Updated Protocol',
@@ -98,7 +102,7 @@ describe('Routes Protocols', () => {
         .put('/protocol/1')
         .send(updatedProtocol)
         .end((err, res) => {
-          expect(res.body).to.be.eql([1]);
+          joiAssert(res.body, joiUpdatedCount);
           done(err);
         });
     });
