@@ -1,6 +1,8 @@
 # Dependency directories
 node_modules/
-# Tern module for Atom
+# Tern intellisense module for Atom
 .tern-project
-npm-debug.log
+# Sqlite DB file
 alex-api.sqlite
+# Debug Log file
+npm-debug.log

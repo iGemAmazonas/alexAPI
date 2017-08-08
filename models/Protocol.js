@@ -3,22 +3,22 @@ export default (sequelize, DataType) => {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
-      autoincrement: true
+      autoincrement: true,
     },
     title: {
       type: DataType.STRING,
       allowNull: false,
       validade: {
-        notEmpty: true
-      }
+        notEmpty: true,
+      },
     },
     description: {
       type: DataType.STRING,
       allowNull: false,
       validade: {
-        notEmpty: true
-      }
-    }
+        notEmpty: true,
+      },
+    },
   });
   return Protocol;
-}
+};

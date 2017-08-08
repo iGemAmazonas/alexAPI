@@ -7,8 +7,8 @@ export default {
     storage: 'alex-api.sqlite',
     define: {
       underscored: true,
-      //prevent sequelize from pluralizing table names
-      freezeTableName: true
-    }
-  }
-}
+      // prevent sequelize from pluralizing table names
+      freezeTableName: true,
+    },
+  },
+};
