@@ -11,4 +11,6 @@ export default {
       freezeTableName: true,
     },
   },
+  jwtSecret: 'Al3x',
+  jwtSession: { session: false },
 };

@@ -5,6 +5,7 @@ export default(app) => {
   const protocolController = new ProtocolController(app.datasource.models.Protocol);
 
   app.route('/protocol')
+    //.all(app.auth.authenticate())
     .get((req, res) => {
       protocolController.getAll()
         .then((response) => {
@@ -21,6 +22,7 @@ export default(app) => {
     });
 
   app.route('/protocol/:id')
+    //.all(app.auth.authenticate())
     .get((req, res) => {
       protocolController.getById(req.params)
         .then((response) => {
