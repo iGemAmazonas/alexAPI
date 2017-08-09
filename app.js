@@ -14,8 +14,9 @@ app.config = config;
 // Setup database to use our defined datasource in config/datasource.js
 app.datasource = datasource(app);
 // Setup authentication method
-app.auth = authorization(app);
-app.use(app.auth.initialize());
+const auth = authorization(app);
+app.use(auth.initialize());
+app.auth = auth;
 // Setup application to parse response with JSON parser
 app.use(bodyParser.json());
 // Setup application port variable to use when start listenning
