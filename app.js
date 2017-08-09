@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import config from './config/config';
 import datasource from './config/datasource';
 import protocolRouter from './routes/protocol';
+import userRouter from './routes/user';
 
 // Setup express as WebServer
 const app = express();
@@ -16,8 +17,10 @@ app.use(bodyParser.json());
 app.set('port', 7000);
 // Setup Protocol Routes
 protocolRouter(app);
+// Setup User Routes
+userRouter(app);
 
-// Setup Test Page on http://localhost:7000/ to return app name and version
+// Setup Main Index Page to return app name and version
 app.route('/')
   .get((req, res) => {
     res.send({ name: 'Alex', version: '1.0' });

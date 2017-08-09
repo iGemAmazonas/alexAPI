@@ -19,14 +19,12 @@ describe('Routes Protocols', () => {
   ];
 
   beforeEach((done) => {
-    Protocol
-      .destroy({ where: {} })
+    Protocol.destroy({ where: {} })
       .then(() => Protocol.bulkCreate(protocolList))
       .then(() => done());
   });
   afterEach((done) => {
-    Protocol
-      .destroy({ where: {} })
+    Protocol.destroy({ where: {} })
       .then(() => done());
   });
 
@@ -35,12 +33,16 @@ describe('Routes Protocols', () => {
       request
         .get('/protocol')
         .end((err, res) => {
+          expect(res.body.length).to.be.eql(3);
           expect(res.body[0].id).to.be.eql(protocolList[0].id);
           expect(res.body[0].title).to.be.eql(protocolList[0].title);
           expect(res.body[0].description).to.be.eql(protocolList[0].description);
           expect(res.body[1].id).to.be.eql(protocolList[1].id);
           expect(res.body[1].title).to.be.eql(protocolList[1].title);
           expect(res.body[1].description).to.be.eql(protocolList[1].description);
+          expect(res.body[2].id).to.be.eql(protocolList[2].id);
+          expect(res.body[2].title).to.be.eql(protocolList[2].title);
+          expect(res.body[2].description).to.be.eql(protocolList[2].description);
           done(err);
         });
     });
@@ -54,7 +56,6 @@ describe('Routes Protocols', () => {
           expect(res.body.id).to.be.eql(protocolList[0].id);
           expect(res.body.title).to.be.eql(protocolList[0].title);
           expect(res.body.description).to.be.eql(protocolList[0].description);
-
           done(err);
         });
     });

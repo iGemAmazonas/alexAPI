@@ -1,42 +1,42 @@
-import ProtocolController from '../controllers/protocol';
+import UserController from '../controllers/user';
 
 
 export default(app) => {
-  const protocolController = new ProtocolController(app.datasource.models.Protocol);
+  const userController = new UserController(app.datasource.models.User);
 
-  app.route('/protocol')
+  app.route('/user')
     .get((req, res) => {
-      protocolController.getAll()
+      userController.getAll()
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .post((req, res) => {
-      protocolController.create(req.body)
+      userController.create(req.body)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     });
 
-  app.route('/protocol/:id')
+  app.route('/user/:id')
     .get((req, res) => {
-      protocolController.getById(req.params)
+      userController.getById(req.params)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .put((req, res) => {
-      protocolController.update(req.body, req.params)
+      userController.update(req.body, req.params)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .delete((req, res) => {
-      protocolController.delete(req.params)
+      userController.delete(req.params)
         .then((response) => {
           res.sendStatus(response.statusCode);
         });
