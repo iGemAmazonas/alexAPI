@@ -1,9 +1,11 @@
 import jwt from 'jwt-simple';
 
-describe('Routes Protocols', () => {
+describe('Routes: Protocol', () => {
   const Protocol = app.datasource.models.Protocol;
   const User = app.datasource.models.User;
   const jwtSecret = app.config.jwtSecret;
+  let token;
+
   const protocolList = [
     {
       id: 1,
@@ -21,7 +23,6 @@ describe('Routes Protocols', () => {
       description: 'Test Protocol 3 Description',
     },
   ];
-  let token;
 
   beforeEach((done) => {
     User.destroy({ where: {} })

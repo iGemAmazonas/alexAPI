@@ -1,4 +1,4 @@
-describe('Routes users', () => {
+describe('Routes: User', () => {
   const User = app.datasource.models.User;
   const userList = [
     {

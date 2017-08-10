@@ -5,6 +5,7 @@ import datasource from './config/datasource';
 import protocolRouter from './routes/protocol';
 import userRouter from './routes/user';
 import authRouter from './routes/auth';
+import indexRouter from './routes/index';
 import authorization from './auth';
 
 // Setup express as WebServer
@@ -27,12 +28,7 @@ protocolRouter(app);
 userRouter(app);
 // Setup Authentication Route
 authRouter(app);
-
-
-// Setup Main Index Page to return app name and version
-app.route('/')
-  .get((req, res) => {
-    res.send({ name: 'Alex', version: '1.0' });
-  });
+// Setup Main Index Page Route
+indexRouter(app);
 
 export default app;

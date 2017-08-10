@@ -1,5 +1,8 @@
 # Dependency directories
 node_modules/
+# Coverage directory
+coverage/
+.nyc_output/
 # Tern intellisense module for Atom
 .tern-project
 # Sqlite DB file
