@@ -7,5 +7,7 @@ coverage/
 .tern-project
 # Sqlite DB file
 alex-api.sqlite
+prod_alex-api.sqlite
+test_alex-api.sqlite
 # Debug Log file
 npm-debug.log

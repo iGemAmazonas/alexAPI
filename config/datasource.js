@@ -7,10 +7,17 @@ let database = null;
 const loadModels = (sequelize) => {
   const dir = path.join(__dirname, '../models');
   const models = [];
+  // Load model files
   fs.readdirSync(dir).forEach((file) => {
     const modelDir = path.join(dir, file);
     const model = sequelize.import(modelDir);
     models[model.name] = model;
+  });
+  // Load models associations
+  models.forEach((modelName) => {
+    if ('associate' in models[modelName]) {
+      models[modelName].associate(models);
+    }
   });
   return models;
 };
@@ -32,7 +39,6 @@ export default (app) => {
     };
 
     database.models = loadModels(sequelize);
-
     sequelize.sync().done(() => database);
   }
 
