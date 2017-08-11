@@ -30,21 +30,10 @@ export default (sequelize, DataType) => {
     },
   });
 
-  Protocol.associate = (Models) => {
-    Protocol.hasMany(Models.Reagent, {
-      through: {
-        model: 'Protocol_Reagent',
-      },
-      quantity: 0,
-    });
-    Protocol.hasMany(Models.Material, {
-      through: {
-        model: 'Protocol_Material',
-      },
-      quantity: 0,
-    });
-    Protocol.hasMany(Models.Comment);
-  };
+  /*Protocol.associate = (models) => {
+    Protocol.belongsTo(models.User, { as: 'creator' });
+    models.User.hasMany(Protocol);
+  };*/
 
   return Protocol;
 };

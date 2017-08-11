@@ -21,12 +21,17 @@ export default (sequelize, DataType) => {
     },
   });
 
-  Reagent.associate = (Models) => {
-    Reagent.belongsToMany(Models.Protocol, {
-      through: {
-        model: 'Protocol_Reagent',
+  Reagent.associate = (models) => {
+    sequelize.define('Protocol_Reagent', {
+      quantity: {
+        type: DataType.INTEGER,
+      },
+      unit: {
+        type: DataType.STRING,
       },
     });
+    Reagent.belongsToMany(models.Protocol, { through: 'Protocol_Reagent' });
+    models.Protocol.belongsToMany(Reagent, { through: 'Protocol_Reagent' });
   };
 
   return Reagent;

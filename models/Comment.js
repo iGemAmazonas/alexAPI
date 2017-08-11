@@ -14,10 +14,9 @@ export default (sequelize, DataType) => {
     },
   });
 
-  Comment.associate = (Models) => {
-    Comment.belongsTo(Models.Protocol);
-    Comment.belongsTo(Models.User);
-    Comment.hasOne(Models.Comment, { as: 'Reply' });
+  Comment.associate = (models) => {
+    Comment.hasOne(models.Comment, { as: 'reply' });
+    Comment.belongsTo(models.User);
   };
 
   return Comment;

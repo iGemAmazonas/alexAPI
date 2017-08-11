@@ -67,6 +67,7 @@ describe('Contracts: Protocol', () => {
         keywords: Joi.string(),
         created_at: Joi.date().iso(),
         updated_at: Joi.date().iso(),
+        creator_id: Joi.number(),
       }));
       request
         .get('/protocol')
@@ -89,6 +90,7 @@ describe('Contracts: Protocol', () => {
         keywords: Joi.string(),
         created_at: Joi.date().iso(),
         updated_at: Joi.date().iso(),
+        creator_id: Joi.number(),
       });
       request
         .get('/protocol/1')
