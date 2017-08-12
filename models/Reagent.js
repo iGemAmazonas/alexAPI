@@ -30,8 +30,8 @@ export default (sequelize, DataType) => {
         type: DataType.STRING,
       },
     });
-    Reagent.belongsToMany(models.Protocol, { through: 'Protocol_Reagent' });
-    models.Protocol.belongsToMany(Reagent, { through: 'Protocol_Reagent' });
+    models.Reagent.belongsToMany(models.Protocol, { through: 'Protocol_Reagent' });
+    models.Protocol.belongsToMany(models.Reagent, { through: 'Protocol_Reagent' });
   };
 
   return Reagent;

@@ -30,10 +30,10 @@ export default (sequelize, DataType) => {
     },
   });
 
-  /*Protocol.associate = (models) => {
-    Protocol.belongsTo(models.User, { as: 'creator' });
-    models.User.hasMany(Protocol);
-  };*/
+  Protocol.associate = (models) => {
+    models.Protocol.belongsTo(models.User, { as: 'creator' });
+    models.User.hasMany(models.Protocol, { as: 'protocols', foreignKey: 'creator_id' });
+  };
 
   return Protocol;
 };

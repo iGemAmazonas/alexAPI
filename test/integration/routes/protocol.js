@@ -11,16 +11,19 @@ describe('Routes: Protocol', () => {
       id: 1,
       title: 'Test Protocol',
       description: 'Default Protocol Description',
+      creator_id: 1,
     },
     {
       id: 2,
       title: 'Test Protocol 2',
       description: 'Test Protocol 2 Description',
+      creator_id: 1,
     },
     {
       id: 3,
       title: 'Test Protocol 3',
       description: 'Test Protocol 3 Description',
+      creator_id: 1,
     },
   ];
 
@@ -59,12 +62,15 @@ describe('Routes: Protocol', () => {
           expect(res.body[0].id).to.be.eql(protocolList[0].id);
           expect(res.body[0].title).to.be.eql(protocolList[0].title);
           expect(res.body[0].description).to.be.eql(protocolList[0].description);
+          expect(res.body[0].creator_id).to.be.eql(protocolList[0].creator_id);
           expect(res.body[1].id).to.be.eql(protocolList[1].id);
           expect(res.body[1].title).to.be.eql(protocolList[1].title);
           expect(res.body[1].description).to.be.eql(protocolList[1].description);
+          expect(res.body[1].creator_id).to.be.eql(protocolList[1].creator_id);
           expect(res.body[2].id).to.be.eql(protocolList[2].id);
           expect(res.body[2].title).to.be.eql(protocolList[2].title);
           expect(res.body[2].description).to.be.eql(protocolList[2].description);
+          expect(res.body[2].creator_id).to.be.eql(protocolList[2].creator_id);
           done(err);
         });
     });
@@ -79,6 +85,7 @@ describe('Routes: Protocol', () => {
           expect(res.body.id).to.be.eql(protocolList[0].id);
           expect(res.body.title).to.be.eql(protocolList[0].title);
           expect(res.body.description).to.be.eql(protocolList[0].description);
+          expect(res.body.creator_id).to.be.eql(protocolList[0].creator_id);
           done(err);
         });
     });
@@ -90,6 +97,7 @@ describe('Routes: Protocol', () => {
         id: 4,
         title: 'New Protocol',
         description: 'New Protocol Description',
+        user_id: 1,
       };
       request
         .post('/protocol')

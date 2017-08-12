@@ -14,6 +14,7 @@ describe('Contracts: Protocol', () => {
       authors: 'Test Protocol 1 Author',
       steps: 'Test Protocol 1 Steps',
       keywords: 'Test Protocol 1 Keywords',
+      creator_id: 1,
     },
     {
       title: 'Test Protocol 2',
@@ -21,6 +22,7 @@ describe('Contracts: Protocol', () => {
       authors: 'Test Protocol 2 Author',
       steps: 'Test Protocol 2 Steps',
       keywords: 'Test Protocol 2 Keywords',
+      creator_id: 1,
     },
     {
       title: 'Test Protocol 3',
@@ -28,6 +30,7 @@ describe('Contracts: Protocol', () => {
       authors: 'Test Protocol 3 Author',
       steps: 'Test Protocol 3 Steps',
       keywords: 'Test Protocol 3 Keywords',
+      creator_id: 1,
     },
   ];
 

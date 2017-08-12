@@ -15,8 +15,9 @@ export default (sequelize, DataType) => {
   });
 
   Comment.associate = (models) => {
-    Comment.hasOne(models.Comment, { as: 'reply' });
-    Comment.belongsTo(models.User);
+    models.Comment.hasOne(models.Comment, { as: 'reply' });
+    models.Comment.belongsTo(models.User, {as: 'creator'});
+    models.User.hasMany(models.Comment, {as: 'comments', foreignKey: 'creator_id'});
   };
 
   return Comment;

@@ -37,8 +37,10 @@ export default (sequelize, DataType) => {
         },
       },
     });
+
   User.isPassword = (encondedPassword, password) => {
     bcrypt.compareSync(password, encondedPassword);
   };
+
   return User;
 };

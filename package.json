@@ -8,7 +8,7 @@
     "test-unit": "cross-env NODE_ENV=test mocha --opts test/mocha.opts test/unit/**/*.js",
     "test-contract": "cross-env NODE_ENV=test mocha --opts test/mocha.opts test/contract/**/*.js",
     "test-integration": "cross-env NODE_ENV=test mocha --opts test/mocha.opts test/integration/**/*.js",
-    "test": "cross-env NODE_ENV=test nyc mocha --opts test/mocha.opts test/**/*.js",
+    "test": "cross-env NODE_ENV=test nyc mocha --opts test/mocha.opts test/**/**/*.js",
     "lint": "eslint --ignore-path .gitignore \"**/*.js\"",
     "lint:fix": "eslint --ignore-path .gitignore  --fix \"**/*.js\""
   },
