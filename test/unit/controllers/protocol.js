@@ -1,3 +1,4 @@
+import HttpStatus from 'http-status';
 import ProtocolController from '../../../controllers/protocol';
 
 describe('Controllers: Protocol', () => {
@@ -59,7 +60,7 @@ describe('Controllers: Protocol', () => {
       const protocolController = new ProtocolController(Protocol);
       return protocolController.create(requestBody)
         .then((response) => {
-          expect(response.statusCode).to.be.eql(201);
+          expect(response.statusCode).to.be.eql(HttpStatus.CREATED);
           expect(response.data).to.be.eql(expectedResponse);
         });
     });
@@ -86,7 +87,7 @@ describe('Controllers: Protocol', () => {
       const protocolController = new ProtocolController(Protocol);
       return protocolController.update(requestBody, { id: 1 })
         .then((response) => {
-          expect(response.statusCode).to.be.eql(200);
+          expect(response.statusCode).to.be.eql(HttpStatus.OK);
           expect(response.data).to.be.eql(expectedResponse);
         });
     });
@@ -100,7 +101,7 @@ describe('Controllers: Protocol', () => {
       td.when(Protocol.destroy({ where: { id: 1 } })).thenResolve({});
       const protocolController = new ProtocolController(Protocol);
       return protocolController.delete({ id: 1 })
-        .then(response => expect(response.statusCode).to.be.eql(204));
+        .then(response => expect(response.statusCode).to.be.eql(HttpStatus.NO_CONTENT));
     });
   });
 });

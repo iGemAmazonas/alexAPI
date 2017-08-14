@@ -16,8 +16,10 @@ export default (sequelize, DataType) => {
 
   Comment.associate = (models) => {
     models.Comment.hasOne(models.Comment, { as: 'reply' });
-    models.Comment.belongsTo(models.User, {as: 'creator'});
-    models.User.hasMany(models.Comment, {as: 'comments', foreignKey: 'creator_id'});
+    models.Comment.belongsTo(models.User, { as: 'creator' });
+    models.User.hasMany(models.Comment, { as: 'comments', foreignKey: 'creator_id' });
+    models.Comment.belongsTo(models.Protocol, { through: 'ProtocolComment' });
+    models.Protocol.belongsToMany(models.Comment, { through: 'ProtocolComment' });
   };
 
   return Comment;

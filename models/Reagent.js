@@ -22,7 +22,7 @@ export default (sequelize, DataType) => {
   });
 
   Reagent.associate = (models) => {
-    sequelize.define('Protocol_Reagent', {
+    sequelize.define('ProtocolReagent', {
       quantity: {
         type: DataType.INTEGER,
       },
@@ -30,8 +30,8 @@ export default (sequelize, DataType) => {
         type: DataType.STRING,
       },
     });
-    models.Reagent.belongsToMany(models.Protocol, { through: 'Protocol_Reagent' });
-    models.Protocol.belongsToMany(models.Reagent, { through: 'Protocol_Reagent' });
+    models.Reagent.belongsToMany(models.Protocol, { through: 'ProtocolReagent' });
+    models.Protocol.belongsToMany(models.Reagent, { through: 'ProtocolReagent' });
   };
 
   return Reagent;
