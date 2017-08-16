@@ -15,9 +15,12 @@ export default (sequelize, DataType) => {
   });
 
   Comment.associate = (models) => {
-    models.Comment.hasOne(models.Comment, { as: 'reply' });
+    // 1:1 -> a Comment may be a replyOf another Comment
+    models.Comment.hasOne(models.Comment, { as: 'replyOf' });
+    // 1:N -> a Comment has a User (creator) and a User may have many Comments
     models.Comment.belongsTo(models.User, { as: 'creator' });
-    models.User.hasMany(models.Comment, { as: 'comments', foreignKey: 'creator_id' });
+    models.User.hasMany(models.Comment, { foreignKey: 'creator_id' });
+    // 1:N -> a Comment can be a Protocol Comment and Protocol can have many Comments
     models.Comment.belongsTo(models.Protocol, { through: 'ProtocolComment' });
     models.Protocol.belongsToMany(models.Comment, { through: 'ProtocolComment' });
   };

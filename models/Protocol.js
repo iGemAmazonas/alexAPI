@@ -23,7 +23,7 @@ export default (sequelize, DataType) => {
       type: DataType.STRING,
     },
     steps: {
-      type: DataType.STRING,
+      type: DataType.TEXT,
     },
     keywords: {
       type: DataType.STRING,
@@ -32,7 +32,7 @@ export default (sequelize, DataType) => {
 
   Protocol.associate = (models) => {
     models.Protocol.belongsTo(models.User, { as: 'creator' });
-    models.User.hasMany(models.Protocol, { as: 'protocols', foreignKey: 'creator_id' });
+    models.User.hasMany(models.Protocol, { foreignKey: 'creator_id' });
   };
 
   return Protocol;
