@@ -2,8 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import config from './config/config';
 import datasource from './config/datasource';
-import protocolRouter from './routes/protocol';
-import userRouter from './routes/user';
+import protocolsRouter from './routes/protocols';
+import usersRouter from './routes/users';
 import authRouter from './routes/auth';
 import indexRouter from './routes/index';
 import authorization from './auth';
@@ -22,10 +22,10 @@ app.auth = auth;
 app.use(bodyParser.json());
 // Setup application port variable to use when start listenning
 app.set('port', 7000);
-// Setup Protocol Routes
-protocolRouter(app);
-// Setup User Routes
-userRouter(app);
+// Setup Protocols Routes
+protocolsRouter(app);
+// Setup Users Routes
+usersRouter(app);
 // Setup Authentication Route
 authRouter(app);
 // Setup Main Index Page Route

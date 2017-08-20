@@ -1,42 +1,42 @@
-import UserController from '../controllers/user';
+import UsersController from '../controllers/users';
 
 
 export default(app) => {
-  const userController = new UserController(app.datasource.models.User);
+  const usersController = new UsersController(app.datasource.models.Users);
 
-  app.route('/user')
+  app.route('/users')
     .get((req, res) => {
-      userController.getAll()
+      usersController.getAll()
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .post((req, res) => {
-      userController.create(req.body)
+      usersController.create(req.body)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     });
 
-  app.route('/user/:id')
+  app.route('/users/:id')
     .get((req, res) => {
-      userController.getById(req.params)
+      usersController.getById(req.params)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .put((req, res) => {
-      userController.update(req.body, req.params)
+      usersController.update(req.body, req.params)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .delete((req, res) => {
-      userController.delete(req.params)
+      usersController.delete(req.params)
         .then((response) => {
           res.sendStatus(response.statusCode);
         });

@@ -1,9 +1,9 @@
 import jwt from 'jwt-simple';
 import HttpStatus from 'http-status';
 
-describe('Contracts: Protocol', () => {
-  const Protocol = app.datasource.models.Protocol;
-  const User = app.datasource.models.User;
+describe('Contracts: Protocols', () => {
+  const Protocols = app.datasource.models.Protocols;
+  const Users = app.datasource.models.Users;
   const jwtSecret = app.config.jwtSecret;
   let token;
 
@@ -35,16 +35,16 @@ describe('Contracts: Protocol', () => {
   ];
 
   beforeEach((done) => {
-    User.destroy({ where: {} })
-      .then(() => User.create({
+    Users.destroy({ where: {} })
+      .then(() => Users.create({
         id: 1,
         name: 'John Doe',
         email: 'johndoe@email.com',
         password: '12345',
       }))
       .then((user) => {
-        Protocol.destroy({ where: {} })
-          .then(() => Protocol.bulkCreate(protocolList))
+        Protocols.destroy({ where: {} })
+          .then(() => Protocols.bulkCreate(protocolList))
           .then(() => {
             token = jwt.encode({ id: user.id }, jwtSecret);
             done();
@@ -52,14 +52,14 @@ describe('Contracts: Protocol', () => {
       });
   });
   afterEach((done) => {
-    User.destroy({ where: {} })
+    Users.destroy({ where: {} })
       .then(() => {
-        Protocol.destroy({ where: {} })
+        Protocols.destroy({ where: {} })
           .then(() => done());
       });
   });
 
-  describe('Route GET /protocol', () => {
+  describe('Route GET /protocols', () => {
     it('should return a list of all protocols', (done) => {
       const joiProtocolList = Joi.array().items(Joi.object().keys({
         id: Joi.number(),
@@ -73,7 +73,7 @@ describe('Contracts: Protocol', () => {
         creator_id: Joi.number(),
       }));
       request
-        .get('/protocol')
+        .get('/protocols')
         .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           joiAssert(res.body, joiProtocolList);
@@ -82,7 +82,7 @@ describe('Contracts: Protocol', () => {
     });
   });
 
-  describe('Route GET /protocol/{id}', () => {
+  describe('Route GET /protocols/{id}', () => {
     it('should return a protocol', (done) => {
       const joiProtocol = Joi.object().keys({
         id: Joi.number(),
@@ -96,7 +96,7 @@ describe('Contracts: Protocol', () => {
         creator_id: Joi.number(),
       });
       request
-        .get('/protocol/1')
+        .get('/protocols/1')
         .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           joiAssert(res.body, joiProtocol);
@@ -105,7 +105,7 @@ describe('Contracts: Protocol', () => {
     });
   });
 
-  describe('Route POST /protocol', () => {
+  describe('Route POST /protocols', () => {
     it('should create a protocol', (done) => {
       const joiProtocol = Joi.object().keys({
         id: Joi.number(),
@@ -120,7 +120,7 @@ describe('Contracts: Protocol', () => {
         description: 'New Protocol Description',
       };
       request
-        .post('/protocol')
+        .post('/protocols')
         .set('Authorization', `JWT ${token}`)
         .send(newProtocol)
         .end((err, res) => {
@@ -130,7 +130,7 @@ describe('Contracts: Protocol', () => {
     });
   });
 
-  describe('Route PUT /protocol/{id}', () => {
+  describe('Route PUT /protocols/{id}', () => {
     it('should update a protocol', (done) => {
       const joiUpdatedCount = Joi.array().items(1);
       const updatedProtocol = {
@@ -139,7 +139,7 @@ describe('Contracts: Protocol', () => {
         description: 'Updated Protocol Description',
       };
       request
-        .put('/protocol/1')
+        .put('/protocols/1')
         .set('Authorization', `JWT ${token}`)
         .send(updatedProtocol)
         .end((err, res) => {
@@ -149,10 +149,10 @@ describe('Contracts: Protocol', () => {
     });
   });
 
-  describe('Route DELETE /protocol/{id}', () => {
+  describe('Route DELETE /protocols/{id}', () => {
     it('should delete a protocol', (done) => {
       request
-        .delete('/protocol/1')
+        .delete('/protocols/1')
         .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           expect(res.statusCode).to.be.eql(HttpStatus.NO_CONTENT);

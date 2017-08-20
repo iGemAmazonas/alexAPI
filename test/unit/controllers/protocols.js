@@ -1,10 +1,10 @@
 import HttpStatus from 'http-status';
-import ProtocolController from '../../../controllers/protocol';
+import ProtocolsController from '../../../controllers/protocols';
 
-describe('Controllers: Protocol', () => {
+describe('Controllers: Protocols', () => {
   describe('Get all protocols: getAll()', () => {
     it('should return a list of all protocols', () => {
-      const Protocol = {
+      const Protocols = {
         findAll: td.function(),
       };
       const expectedResponse = [{
@@ -14,16 +14,16 @@ describe('Controllers: Protocol', () => {
         created_at: '2016-08-06T23:55:36.692Z',
         updated_at: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocol.findAll({})).thenResolve(expectedResponse);
-      const protocolController = new ProtocolController(Protocol);
-      return protocolController.getAll()
+      td.when(Protocols.findAll({})).thenResolve(expectedResponse);
+      const protocolsController = new ProtocolsController(Protocols);
+      return protocolsController.getAll()
         .then(response => expect(response.data).to.be.eql(expectedResponse));
     });
   });
 
   describe('Get a protocol: getById()', () => {
     it('should return a protocol', () => {
-      const Protocol = {
+      const Protocols = {
         findOne: td.function(),
       };
       const expectedResponse = [{
@@ -33,16 +33,16 @@ describe('Controllers: Protocol', () => {
         created_at: '2016-08-06T23:55:36.692Z',
         updated_at: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocol.findOne({ where: { id: 1 } })).thenResolve(expectedResponse);
-      const protocolController = new ProtocolController(Protocol);
-      return protocolController.getById({ id: 1 })
+      td.when(Protocols.findOne({ where: { id: 1 } })).thenResolve(expectedResponse);
+      const protocolsController = new ProtocolsController(Protocols);
+      return protocolsController.getById({ id: 1 })
         .then(response => expect(response.data).to.be.eql(expectedResponse));
     });
   });
 
   describe('Create a protocol: create()', () => {
     it('should create a protocol', () => {
-      const Protocol = {
+      const Protocols = {
         create: td.function(),
       };
       const requestBody = {
@@ -56,9 +56,9 @@ describe('Controllers: Protocol', () => {
         created_at: '2016-08-06T23:55:36.692Z',
         updated_at: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocol.create(requestBody)).thenResolve(expectedResponse);
-      const protocolController = new ProtocolController(Protocol);
-      return protocolController.create(requestBody)
+      td.when(Protocols.create(requestBody)).thenResolve(expectedResponse);
+      const protocolsController = new ProtocolsController(Protocols);
+      return protocolsController.create(requestBody)
         .then((response) => {
           expect(response.statusCode).to.be.eql(HttpStatus.CREATED);
           expect(response.data).to.be.eql(expectedResponse);
@@ -68,7 +68,7 @@ describe('Controllers: Protocol', () => {
 
   describe('Update a protocol: update()', () => {
     it('should update a protocol', () => {
-      const Protocol = {
+      const Protocols = {
         update: td.function(),
       };
       const requestBody = {
@@ -83,9 +83,9 @@ describe('Controllers: Protocol', () => {
         created_at: '2016-08-06T23:55:36.692Z',
         updated_at: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocol.update(requestBody, { where: { id: 1 } })).thenResolve(expectedResponse);
-      const protocolController = new ProtocolController(Protocol);
-      return protocolController.update(requestBody, { id: 1 })
+      td.when(Protocols.update(requestBody, { where: { id: 1 } })).thenResolve(expectedResponse);
+      const protocolsController = new ProtocolsController(Protocols);
+      return protocolsController.update(requestBody, { id: 1 })
         .then((response) => {
           expect(response.statusCode).to.be.eql(HttpStatus.OK);
           expect(response.data).to.be.eql(expectedResponse);
@@ -95,12 +95,12 @@ describe('Controllers: Protocol', () => {
 
   describe('Delete a protocol: delete()', () => {
     it('should delete a protocol', () => {
-      const Protocol = {
+      const Protocols = {
         destroy: td.function(),
       };
-      td.when(Protocol.destroy({ where: { id: 1 } })).thenResolve({});
-      const protocolController = new ProtocolController(Protocol);
-      return protocolController.delete({ id: 1 })
+      td.when(Protocols.destroy({ where: { id: 1 } })).thenResolve({});
+      const protocolsController = new ProtocolsController(Protocols);
+      return protocolsController.delete({ id: 1 })
         .then(response => expect(response.statusCode).to.be.eql(HttpStatus.NO_CONTENT));
     });
   });

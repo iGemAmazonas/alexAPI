@@ -1,5 +1,5 @@
 export default (sequelize, DataType) => {
-  const Protocol = sequelize.define('Protocol', {
+  const Protocols = sequelize.define('Protocols', {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
@@ -30,10 +30,10 @@ export default (sequelize, DataType) => {
     },
   });
 
-  Protocol.associate = (models) => {
-    models.Protocol.belongsTo(models.User, { as: 'creator' });
-    models.User.hasMany(models.Protocol, { foreignKey: 'creator_id' });
+  Protocols.associate = (models) => {
+    models.Protocols.belongsTo(models.Users, { as: 'creator' });
+    models.Users.hasMany(models.Protocols, { foreignKey: 'creator_id' });
   };
 
-  return Protocol;
+  return Protocols;
 };

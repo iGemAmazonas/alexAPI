@@ -10,42 +10,42 @@ const errorResponse = (message, statusCode = HttpStatus.BAD_REQUEST) => defaultR
 }, statusCode);
 
 
-class UserController {
+class ProtocolsController {
 
-  constructor(User) {
-    this.User = User;
+  constructor(Protocols) {
+    this.Protocols = Protocols;
   }
 
   getAll() {
-    return this.User.findAll({})
+    return this.Protocols.findAll({})
       .then(result => defaultResponse(result))
       .catch(error => errorResponse(error.message));
   }
 
   getById(params) {
-    return this.User.findOne({ where: params })
+    return this.Protocols.findOne({ where: params })
       .then(result => defaultResponse(result))
       .catch(error => errorResponse(error.message));
   }
 
   create(data) {
-    return this.User.create(data)
+    return this.Protocols.create(data)
       .then(result => defaultResponse(result, HttpStatus.CREATED))
       .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
   }
 
   update(data, params) {
-    return this.User.update(data, { where: params })
+    return this.Protocols.update(data, { where: params })
       .then(result => defaultResponse(result))
       .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
   }
 
   delete(params) {
-    return this.User.destroy({ where: params })
+    return this.Protocols.destroy({ where: params })
       .then(result => defaultResponse(result, HttpStatus.NO_CONTENT))
       .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
   }
 
 }
 
-export default UserController;
+export default ProtocolsController;

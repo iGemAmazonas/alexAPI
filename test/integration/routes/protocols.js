@@ -1,8 +1,8 @@
 import jwt from 'jwt-simple';
 
-describe('Routes: Protocol', () => {
-  const Protocol = app.datasource.models.Protocol;
-  const User = app.datasource.models.User;
+describe('Routes: Protocols', () => {
+  const Protocols = app.datasource.models.Protocols;
+  const Users = app.datasource.models.Users;
   const jwtSecret = app.config.jwtSecret;
   let token;
 
@@ -28,16 +28,16 @@ describe('Routes: Protocol', () => {
   ];
 
   beforeEach((done) => {
-    User.destroy({ where: {} })
-      .then(() => User.create({
+    Users.destroy({ where: {} })
+      .then(() => Users.create({
         id: 1,
         name: 'John Doe',
         email: 'johndoe@email.com',
         password: '12345',
       }))
       .then((user) => {
-        Protocol.destroy({ where: {} })
-          .then(() => Protocol.bulkCreate(protocolList))
+        Protocols.destroy({ where: {} })
+          .then(() => Protocols.bulkCreate(protocolList))
           .then(() => {
             token = jwt.encode({ id: user.id }, jwtSecret);
             done();
@@ -45,17 +45,17 @@ describe('Routes: Protocol', () => {
       });
   });
   afterEach((done) => {
-    User.destroy({ where: {} })
+    Users.destroy({ where: {} })
       .then(() => {
-        Protocol.destroy({ where: {} })
+        Protocols.destroy({ where: {} })
           .then(() => done());
       });
   });
 
-  describe('Route GET /protocol', () => {
+  describe('Route GET /protocols', () => {
     it('should return a list of all protocols', (done) => {
       request
-        .get('/protocol')
+        .get('/protocols')
         .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           expect(res.body.length).to.be.eql(3);
@@ -76,10 +76,10 @@ describe('Routes: Protocol', () => {
     });
   });
 
-  describe('Route GET /protocol/{id}', () => {
+  describe('Route GET /protocols/{id}', () => {
     it('should return a protocol', (done) => {
       request
-        .get('/protocol/1')
+        .get('/protocols/1')
         .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           expect(res.body.id).to.be.eql(protocolList[0].id);
@@ -91,7 +91,7 @@ describe('Routes: Protocol', () => {
     });
   });
 
-  describe('Route POST /protocol', () => {
+  describe('Route POST /protocols', () => {
     it('should create a protocol', (done) => {
       const newProtocol = {
         id: 4,
@@ -100,7 +100,7 @@ describe('Routes: Protocol', () => {
         user_id: 1,
       };
       request
-        .post('/protocol')
+        .post('/protocols')
         .set('Authorization', `JWT ${token}`)
         .send(newProtocol)
         .end((err, res) => {
@@ -112,7 +112,7 @@ describe('Routes: Protocol', () => {
     });
   });
 
-  describe('Route PUT /protocol/{id}', () => {
+  describe('Route PUT /protocols/{id}', () => {
     it('should update a protocol', (done) => {
       const updatedProtocol = {
         id: 1,
@@ -120,7 +120,7 @@ describe('Routes: Protocol', () => {
         description: 'Updated Protocol Description',
       };
       request
-        .put('/protocol/1')
+        .put('/protocols/1')
         .set('Authorization', `JWT ${token}`)
         .send(updatedProtocol)
         .end((err, res) => {
@@ -130,10 +130,10 @@ describe('Routes: Protocol', () => {
     });
   });
 
-  describe('Route DELETE /protocol/{id}', () => {
+  describe('Route DELETE /protocols/{id}', () => {
     it('should delete a protocol', (done) => {
       request
-        .delete('/protocol/1')
+        .delete('/protocols/1')
         .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           expect(res.statusCode).to.be.eql(204);

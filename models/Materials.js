@@ -1,5 +1,5 @@
 export default (sequelize, DataType) => {
-  const Material = sequelize.define('Material', {
+  const Materials = sequelize.define('Materials', {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
@@ -21,15 +21,15 @@ export default (sequelize, DataType) => {
     },
   });
 
-  Material.associate = (models) => {
-    sequelize.define('ProtocolMaterial', {
+  Materials.associate = (models) => {
+    sequelize.define('ProtocolMaterials', {
       quantity: {
         type: DataType.INTEGER,
       },
-    });
-    models.Material.belongsToMany(models.Protocol, { through: 'ProtocolMaterial' });
-    models.Protocol.belongsToMany(models.Material, { through: 'ProtocolMaterial' });
+    }, { timestamps: false });
+    models.Materials.belongsToMany(models.Protocols, { through: 'ProtocolMaterials' });
+    models.Protocols.belongsToMany(models.Materials, { through: 'ProtocolMaterials' });
   };
 
-  return Material;
+  return Materials;
 };

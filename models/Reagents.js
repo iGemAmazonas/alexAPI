@@ -1,5 +1,5 @@
 export default (sequelize, DataType) => {
-  const Reagent = sequelize.define('Reagent', {
+  const Reagents = sequelize.define('Reagents', {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
@@ -21,18 +21,18 @@ export default (sequelize, DataType) => {
     },
   });
 
-  Reagent.associate = (models) => {
-    sequelize.define('ProtocolReagent', {
+  Reagents.associate = (models) => {
+    sequelize.define('ProtocolReagents', {
       quantity: {
         type: DataType.INTEGER,
       },
       unit: {
         type: DataType.STRING,
       },
-    });
-    models.Reagent.belongsToMany(models.Protocol, { through: 'ProtocolReagent' });
-    models.Protocol.belongsToMany(models.Reagent, { through: 'ProtocolReagent' });
+    }, { timestamps: false });
+    models.Reagents.belongsToMany(models.Protocols, { through: 'ProtocolReagents' });
+    models.Protocols.belongsToMany(models.Reagents, { through: 'ProtocolReagents' });
   };
 
-  return Reagent;
+  return Reagents;
 };

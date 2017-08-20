@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 
 export default (sequelize, DataType) => {
-  const User = sequelize.define('User', {
+  const Users = sequelize.define('Users', {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
@@ -38,9 +38,9 @@ export default (sequelize, DataType) => {
       },
     });
 
-  User.isPassword = (encondedPassword, password) => {
+  Users.isPassword = (encondedPassword, password) => {
     bcrypt.compareSync(password, encondedPassword);
   };
 
-  return User;
+  return Users;
 };

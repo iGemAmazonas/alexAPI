@@ -1,44 +1,44 @@
-import ProtocolController from '../controllers/protocol';
+import ProtocolsController from '../controllers/protocols';
 
 
 export default(app) => {
-  const protocolController = new ProtocolController(app.datasource.models.Protocol);
+  const protocolsController = new ProtocolsController(app.datasource.models.Protocols);
 
-  app.route('/protocol')
+  app.route('/protocols')
     .all(app.auth.authenticate())
     .get((req, res) => {
-      protocolController.getAll()
+      protocolsController.getAll()
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .post((req, res) => {
-      protocolController.create(req.body)
+      protocolsController.create(req.body)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     });
 
-  app.route('/protocol/:id')
+  app.route('/protocols/:id')
     .all(app.auth.authenticate())
     .get((req, res) => {
-      protocolController.getById(req.params)
+      protocolsController.getById(req.params)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .put((req, res) => {
-      protocolController.update(req.body, req.params)
+      protocolsController.update(req.body, req.params)
         .then((response) => {
           res.status(response.statusCode);
           res.json(response.data);
         });
     })
     .delete((req, res) => {
-      protocolController.delete(req.params)
+      protocolsController.delete(req.params)
         .then((response) => {
           res.sendStatus(response.statusCode);
         });

@@ -1,5 +1,5 @@
-describe('Routes: User', () => {
-  const User = app.datasource.models.User;
+describe('Routes: Users', () => {
+  const Users = app.datasource.models.Users;
   const userList = [
     {
       id: 1,
@@ -22,21 +22,21 @@ describe('Routes: User', () => {
   ];
 
   beforeEach((done) => {
-    User
+    Users
       .destroy({ where: {} })
-      .then(() => User.bulkCreate(userList))
+      .then(() => Users.bulkCreate(userList))
       .then(() => done());
   });
   afterEach((done) => {
-    User
+    Users
       .destroy({ where: {} })
       .then(() => done());
   });
 
-  describe('Route GET /user', () => {
+  describe('Route GET /users', () => {
     it('should return a list of all users', (done) => {
       request
-        .get('/user')
+        .get('/users')
         .end((err, res) => {
           expect(res.body.length).to.be.eql(3);
           expect(res.body[0].id).to.be.eql(userList[0].id);
@@ -56,10 +56,10 @@ describe('Routes: User', () => {
     });
   });
 
-  describe('Route GET /user/{id}', () => {
+  describe('Route GET /users/{id}', () => {
     it('should return a user', (done) => {
       request
-        .get('/user/1')
+        .get('/users/1')
         .end((err, res) => {
           expect(res.body.id).to.be.eql(userList[0].id);
           expect(res.body.name).to.be.eql(userList[0].name);
@@ -70,7 +70,7 @@ describe('Routes: User', () => {
     });
   });
 
-  describe('Route POST /user', () => {
+  describe('Route POST /users', () => {
     it('should create a user', (done) => {
       const newUser = {
         id: 4,
@@ -79,7 +79,7 @@ describe('Routes: User', () => {
         password: 'newUserPass01',
       };
       request
-        .post('/user')
+        .post('/users')
         .send(newUser)
         .end((err, res) => {
           expect(res.body.id).to.be.eql(newUser.id);
@@ -90,7 +90,7 @@ describe('Routes: User', () => {
     });
   });
 
-  describe('Route PUT /user/{id}', () => {
+  describe('Route PUT /users/{id}', () => {
     it('should update a user', (done) => {
       const updatedUser = {
         id: 1,
@@ -99,7 +99,7 @@ describe('Routes: User', () => {
         password: 'updatedtest',
       };
       request
-        .put('/user/1')
+        .put('/users/1')
         .send(updatedUser)
         .end((err, res) => {
           expect(res.body).to.be.eql([1]);
@@ -108,10 +108,10 @@ describe('Routes: User', () => {
     });
   });
 
-  describe('Route DELETE /user/{id}', () => {
+  describe('Route DELETE /users/{id}', () => {
     it('should delete a user', (done) => {
       request
-        .delete('/user/1')
+        .delete('/users/1')
         .end((err, res) => {
           expect(res.statusCode).to.be.eql(204);
           done(err);
