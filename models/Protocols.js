@@ -13,20 +13,11 @@ export default (sequelize, DataType) => {
       },
     },
     description: {
-      type: DataType.STRING,
+      type: DataType.TEXT,
       allowNull: false,
       validade: {
         notEmpty: true,
       },
-    },
-    authors: {
-      type: DataType.STRING,
-    },
-    steps: {
-      type: DataType.TEXT,
-    },
-    keywords: {
-      type: DataType.STRING,
     },
   });
 
