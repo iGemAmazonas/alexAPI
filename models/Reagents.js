@@ -30,6 +30,9 @@ export default (sequelize, DataType) => {
         type: DataType.STRING,
       },
     }, { timestamps: false });
+    // N:M -> Creates join table with protocols_id and reagents_id
+    // Define add/get/set/has Protocols methods in an reagent instance
+    // Define add/get/set/has Reagents methods in a protocol instance
     models.Reagents.belongsToMany(models.Protocols, { through: 'ProtocolReagents' });
     models.Protocols.belongsToMany(models.Reagents, { through: 'ProtocolReagents' });
   };
