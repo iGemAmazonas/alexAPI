@@ -16,7 +16,7 @@ class BaseController {
   }
 
   findAllByFilters(filters) {
-    return this.Model.findAll()
+    return this.Model.findAll(filters)
       .then(result => defaultResponse(result))
       .catch(error => errorResponse(error.message));
   }
