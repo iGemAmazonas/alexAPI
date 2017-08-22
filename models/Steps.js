@@ -14,7 +14,7 @@ export default (sequelize, DataType) => {
     },
   });
 
-  Projects.associate = (models) => {
+  Steps.associate = (models) => {
     // 1:N -> A project has one creator and a user may have many projects
     models.Steps.belongsTo(models.Users, { as: 'creator' });
     models.Users.hasMany(models.Steps, { foreignKey: 'creator_id' });
@@ -23,5 +23,5 @@ export default (sequelize, DataType) => {
     models.Protocols.hasMany(models.Steps);
   };
 
-  return Projects;
+  return Steps;
 };

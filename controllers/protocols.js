@@ -1,51 +1,42 @@
-import HttpStatus from 'http-status';
+import BaseController from './base';
 
-const defaultResponse = (data, statusCode = HttpStatus.OK) => ({
-  data,
-  statusCode,
-});
+const  allAssociations = [
+  { model: 'Steps' },
+  { model: 'Authors' },
+  { model: 'Keywords' },
+  { model: 'ProtocolComments' },
+  { model: 'ProtocolReagents' },
+  { model: 'ProtocolMaterials' },
+];
 
-const errorResponse = (message, statusCode = HttpStatus.BAD_REQUEST) => defaultResponse({
-  error: message,
-}, statusCode);
-
-
-class ProtocolsController {
-
+class ProtocolsController extends BaseController {
   constructor(Protocols) {
-    this.Protocols = Protocols;
+    super(Protocols);
   }
 
-  getAll() {
-    return this.Protocols.findAll({})
-      .then(result => defaultResponse(result))
-      .catch(error => errorResponse(error.message));
+  sanitize(params) {
+    return params;
   }
 
-  getById(params) {
-    return this.Protocols.findOne({ where: params })
-      .then(result => defaultResponse(result))
-      .catch(error => errorResponse(error.message));
+  findAllByFilters(params) {
+    return super.findAllByFilters({ where: this.sanitize(params) });
+  }
+
+  findById(params) {
+    return super.findById({ where: this.sanitize(params) });
   }
 
   create(data) {
-    return this.Protocols.create(data)
-      .then(result => defaultResponse(result, HttpStatus.CREATED))
-      .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return super.create(this.sanitize(data));
   }
 
   update(data, params) {
-    return this.Protocols.update(data, { where: params })
-      .then(result => defaultResponse(result))
-      .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return super.update(this.sanitize(data), { where: this.sanitize(params) });
   }
 
   delete(params) {
-    return this.Protocols.destroy({ where: params })
-      .then(result => defaultResponse(result, HttpStatus.NO_CONTENT))
-      .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return super.delete({ where: this.sanitize(params) });
   }
-
-}
+};
 
 export default ProtocolsController;

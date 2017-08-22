@@ -14,9 +14,9 @@ describe('Controllers: Protocols', () => {
         created_at: '2016-08-06T23:55:36.692Z',
         updated_at: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocols.findAll({})).thenResolve(expectedResponse);
+      td.when(Protocols.findAll()).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
-      return protocolsController.getAll()
+      return protocolsController.findAllByFilters()
         .then(response => expect(response.data).to.be.eql(expectedResponse));
     });
   });
@@ -35,7 +35,7 @@ describe('Controllers: Protocols', () => {
       }];
       td.when(Protocols.findOne({ where: { id: 1 } })).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
-      return protocolsController.getById({ id: 1 })
+      return protocolsController.findById({ id: 1 })
         .then(response => expect(response.data).to.be.eql(expectedResponse));
     });
   });

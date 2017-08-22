@@ -1,51 +1,33 @@
-import HttpStatus from 'http-status';
+import BaseController from './base';
 
-const defaultResponse = (data, statusCode = HttpStatus.OK) => ({
-  data,
-  statusCode,
-});
-
-const errorResponse = (message, statusCode = HttpStatus.BAD_REQUEST) => defaultResponse({
-  error: message,
-}, statusCode);
-
-
-class UsersController {
-
+class UsersController extends BaseController {
   constructor(Users) {
-    this.Users = Users;
+    super(Users);
   }
 
-  getAll() {
-    return this.Users.findAll({})
-      .then(result => defaultResponse(result))
-      .catch(error => errorResponse(error.message));
+  sanitize(params) {
+    return params;
   }
 
-  getById(params) {
-    return this.Users.findOne({ where: params })
-      .then(result => defaultResponse(result))
-      .catch(error => errorResponse(error.message));
+  findAllByFilters(params) {
+    return super.findAllByFilters({ where: this.sanitize(params) });
+  }
+
+  findById(params) {
+    return super.findById({ where: this.sanitize(params) });
   }
 
   create(data) {
-    return this.Users.create(data)
-      .then(result => defaultResponse(result, HttpStatus.CREATED))
-      .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return super.create(this.sanitize(data));
   }
 
   update(data, params) {
-    return this.Users.update(data, { where: params })
-      .then(result => defaultResponse(result))
-      .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return super.update(this.sanitize(data), { where: this.sanitize(params) });
   }
 
   delete(params) {
-    return this.Users.destroy({ where: params })
-      .then(result => defaultResponse(result, HttpStatus.NO_CONTENT))
-      .catch(error => errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
+    return super.delete({ where: this.sanitize(params) });
   }
-
-}
+};
 
 export default UsersController;
