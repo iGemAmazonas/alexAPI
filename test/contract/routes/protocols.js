@@ -11,26 +11,17 @@ describe('Contracts: Protocols', () => {
     {
       title: 'Test Protocol 1',
       description: 'Test Protocol 1 Description',
-      authors: 'Test Protocol 1 Author',
-      steps: 'Test Protocol 1 Steps',
-      keywords: 'Test Protocol 1 Keywords',
-      creator_id: 1,
+      creatorId: 1,
     },
     {
       title: 'Test Protocol 2',
       description: 'Test Protocol 2 Description',
-      authors: 'Test Protocol 2 Author',
-      steps: 'Test Protocol 2 Steps',
-      keywords: 'Test Protocol 2 Keywords',
-      creator_id: 1,
+      creatorId: 1,
     },
     {
       title: 'Test Protocol 3',
       description: 'Test Protocol 3 Description',
-      authors: 'Test Protocol 3 Author',
-      steps: 'Test Protocol 3 Steps',
-      keywords: 'Test Protocol 3 Keywords',
-      creator_id: 1,
+      creatorId: 1,
     },
   ];
 
@@ -65,12 +56,9 @@ describe('Contracts: Protocols', () => {
         id: Joi.number(),
         title: Joi.string(),
         description: Joi.string(),
-        authors: Joi.string(),
-        steps: Joi.string(),
-        keywords: Joi.string(),
-        created_at: Joi.date().iso(),
-        updated_at: Joi.date().iso(),
-        creator_id: Joi.number(),
+        createdAt: Joi.date().iso(),
+        updatedAt: Joi.date().iso(),
+        creatorId: Joi.number(),
       }));
       request
         .get('/protocols')
@@ -88,12 +76,9 @@ describe('Contracts: Protocols', () => {
         id: Joi.number(),
         title: Joi.string(),
         description: Joi.string(),
-        authors: Joi.string(),
-        steps: Joi.string(),
-        keywords: Joi.string(),
-        created_at: Joi.date().iso(),
-        updated_at: Joi.date().iso(),
-        creator_id: Joi.number(),
+        createdAt: Joi.date().iso(),
+        updatedAt: Joi.date().iso(),
+        creatorId: Joi.number(),
       });
       request
         .get('/protocols/1')
@@ -111,8 +96,8 @@ describe('Contracts: Protocols', () => {
         id: Joi.number(),
         title: Joi.string(),
         description: Joi.string(),
-        created_at: Joi.date().iso(),
-        updated_at: Joi.date().iso(),
+        createdAt: Joi.date().iso(),
+        updatedAt: Joi.date().iso(),
       });
       const newProtocol = {
         id: 4,

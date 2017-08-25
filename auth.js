@@ -16,7 +16,7 @@ export default(app) => {
             email: user.email,
           });
         }
-        return done(new Error("User not found"), false);
+        return done(new Error('User not found'), false);
       })
       .catch(error => done(error, null));
   });

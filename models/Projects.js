@@ -24,15 +24,17 @@ export default (sequelize, DataType) => {
   Projects.associate = (models) => {
     sequelize.define('ProjectParticipants', {
       role: {
-        type: DataType.INTEGER,
+        type: DataType.ENUM,
+        values: ['admin', 'creator', 'editor', 'reader'],
+        default: 'creator',
       },
     });
-    // N:M -> A project has many participants, and a participant may have many projects 
+    // N:M -> A project has many participants, and a participant may have many projects
     models.Projects.belongsToMany(models.Users, { through: 'ProjectParticipants' });
     models.Users.belongsToMany(models.Projects, { through: 'ProjectParticipants' });
     // 1:N -> A project has one creator and a user may have many projects
     models.Projects.belongsTo(models.Users, { as: 'creator' });
-    models.Users.hasMany(models.Projects, { foreignKey: 'creator_id' });
+    models.Users.hasMany(models.Projects, { foreignKey: 'creatorId' });
   };
 
   return Projects;

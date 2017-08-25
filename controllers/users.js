@@ -1,10 +1,6 @@
 import BaseController from './base';
 
 class UsersController extends BaseController {
-  constructor(Users) {
-    super(Users);
-  }
-
   sanitize(params) {
     return params;
   }
@@ -28,6 +24,6 @@ class UsersController extends BaseController {
   delete(params) {
     return super.delete({ where: this.sanitize(params) });
   }
-};
+}
 
 export default UsersController;

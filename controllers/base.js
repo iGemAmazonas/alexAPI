@@ -10,7 +10,6 @@ const errorResponse = (message, statusCode = HttpStatus.BAD_REQUEST) => defaultR
 }, statusCode);
 
 class BaseController {
-
   constructor(Model) {
     this.Model = Model;
   }

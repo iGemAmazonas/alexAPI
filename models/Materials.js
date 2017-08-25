@@ -25,6 +25,10 @@ export default (sequelize, DataType) => {
     sequelize.define('ProtocolMaterials', {
       quantity: {
         type: DataType.INTEGER,
+        allowNull: false,
+        validade: {
+          notEmpty: true,
+        },
       },
     }, { timestamps: false });
     // N:M -> Creates join table with protocols_id and materials_id

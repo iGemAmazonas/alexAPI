@@ -46,8 +46,8 @@ describe('Models: Materials', () => {
           expect(response).to.have.property('id');
           expect(response).to.have.property('name');
           expect(response).to.have.property('description');
-          expect(response).to.have.property('created_at');
-          expect(response).to.have.property('updated_at');
+          expect(response).to.have.property('createdAt');
+          expect(response).to.have.property('updatedAt');
         });
     });
 
@@ -61,8 +61,8 @@ describe('Models: Materials', () => {
           expect(response.id).to.be.eql(null);
           expect(response.name).to.be.eql('Test Material');
           expect(response.description).to.be.eql('Test Material Description');
-          expect(response.created_at).to.be.a('Date');
-          expect(response.updated_at).to.be.a('Date');
+          expect(response.createdAt).to.be.a('Date');
+          expect(response.updatedAt).to.be.a('Date');
         })
         .then(() => Materials.findAll()
           .then((res) => {
@@ -71,8 +71,8 @@ describe('Models: Materials', () => {
             expect(res[0].id).to.be.eql(1);
             expect(res[0].name).to.be.eql('Test Material');
             expect(res[0].description).to.be.eql('Test Material Description');
-            expect(res[0].created_at).to.be.a('Date');
-            expect(res[0].updated_at).to.be.a('Date');
+            expect(res[0].createdAt).to.be.a('Date');
+            expect(res[0].updatedAt).to.be.a('Date');
           }));
     });
 
@@ -96,20 +96,48 @@ describe('Models: Materials', () => {
     });
   });
 
-  describe('Associations with Protocol:', () => {
+  describe('Association with Protocol:', () => {
     it('check if a material has add/get/set/has Protocols properties defined', () => {
       const testMaterial = {
         name: 'Test Material',
         description: 'Test Material Description',
       };
       return Materials.create(testMaterial)
-        .then((response) => {
-          expect(response).to.have.property('addProtocol');
-          expect(response).to.have.property('addProtocols');
-          expect(response).to.have.property('getProtocols');
-          expect(response).to.have.property('setProtocols');
-          expect(response).to.have.property('hasProtocol');
-        });
+        .then(() => Materials.findById(1)
+          .then((response) => {
+            expect(response).to.have.property('addProtocol');
+            expect(response).to.have.property('addProtocols');
+            expect(response).to.not.have.property('getProtocol');
+            expect(response).to.have.property('getProtocols');
+            expect(response).to.not.have.property('setProtocol');
+            expect(response).to.have.property('setProtocols');
+            expect(response).to.have.property('hasProtocol');
+            expect(response).to.have.property('hasProtocols');
+            expect(response).to.not.have.property('ProtocolMaterials');
+            expect(response).to.not.have.property('ProtocolMaterial');
+            expect(response).to.not.have.property('Protocols');
+            expect(response).to.not.have.property('Protocol');
+          }));
+    });
+
+    it('protocol association requires field quantity', () => {
+      const testMaterial = {
+        name: 'Test Material',
+        description: 'Test Material Description',
+      };
+      const testProtocol = {
+        title: 'Test Protocol',
+        description: 'Test Protocol Description',
+      };
+      return Materials.create(testMaterial)
+        .then(() => Protocols.create(testProtocol)
+          .then(() => Materials.findById(1)
+            .then(material => Protocols.findById(1)
+              .then(protocol => material.addProtocol(protocol)
+              .catch((error) => {
+                expect(error.name).to.be.eql('AggregateError');
+                expect(error.message).to.be.eql('aggregate error');
+              })))));
     });
 
     it('check if Protocol was associated', () => {
@@ -125,12 +153,12 @@ describe('Models: Materials', () => {
         .then(() => Protocols.create(testProtocol)
           .then(() => Materials.findById(1)
             .then(material => Protocols.findById(1)
-              .then(protocol => material.addProtocol(protocol)
+              .then(protocol => material.addProtocol(protocol, { through: { quantity: 0 } })
                 .then(() => material.hasProtocol(protocol)
                   .then(res => expect(res).to.be.true))))));
     });
 
-    it('check if Protocol associated is correct', () => {
+    it('check if associated Protocol has all attributes', () => {
       const testMaterial = {
         name: 'Test Material',
         description: 'Test Material Description',
@@ -143,7 +171,7 @@ describe('Models: Materials', () => {
         .then(() => Protocols.create(testProtocol)
           .then(() => Materials.findById(1)
             .then(material => Protocols.findById(1)
-              .then(protocol => material.addProtocols([protocol])
+              .then(protocol => material.addProtocols([protocol], { through: { quantity: 1 } })
                 .then(() => material.getProtocols()
                   .then((res) => {
                     expect(res).to.be.an('array');
@@ -151,36 +179,37 @@ describe('Models: Materials', () => {
                     expect(res[0].id).to.be.eql(1);
                     expect(res[0].title).to.be.eql(testProtocol.title);
                     expect(res[0].description).to.be.eql(testProtocol.description);
+                  }))))));
+    });
+
+    it('check if associated Protocol has the association attributes', () => {
+      const testMaterial = {
+        name: 'Test Material',
+        description: 'Test Material Description',
+      };
+      const testProtocol = {
+        title: 'Test Protocol',
+        description: 'Test Protocol Description',
+      };
+      return Materials.create(testMaterial)
+        .then(() => Protocols.create(testProtocol)
+          .then(() => Materials.findById(1)
+            .then(material => Protocols.findById(1)
+              .then(protocol => material.setProtocols([protocol], { through: { quantity: 2 } })
+                .then(() => material.getProtocols()
+                  .then((res) => {
+                    expect(res).to.be.an('array');
+                    expect(res.length).to.be.eql(1);
+                    expect(res[0].id).to.be.eql(1);
+                    expect(res[0].title).to.be.eql(testProtocol.title);
+                    expect(res[0].description).to.be.eql(testProtocol.description);
+                    expect(res[0]).to.have.property('ProtocolMaterials');
                     expect(res[0].ProtocolMaterials).to.have.property('quantity');
+                    expect(res[0].ProtocolMaterials.quantity).to.be.eql(2);
                   }))))));
     });
 
-    it('check if associated Protocol has the correct join attributes', () => {
-      const testMaterial = {
-        name: 'Test Material',
-        description: 'Test Material Description',
-      };
-      const testProtocol = {
-        title: 'Test Protocol',
-        description: 'Test Protocol Description',
-      };
-      return Materials.create(testMaterial)
-        .then(() => Protocols.create(testProtocol)
-          .then(() => Materials.findById(1)
-            .then(material => Protocols.findById(1)
-              .then(protocol => material.setProtocols([protocol], { through: { quantity: 5 } })
-                .then(() => material.getProtocols()
-                  .then((res) => {
-                    expect(res).to.be.an('array');
-                    expect(res.length).to.be.eql(1);
-                    expect(res[0].id).to.be.eql(1);
-                    expect(res[0].title).to.be.eql(testProtocol.title);
-                    expect(res[0].description).to.be.eql(testProtocol.description);
-                    expect(res[0].ProtocolMaterials.quantity).to.be.eql(5);
-                  }))))));
-    });
-
-    it('check getting material from associated protocol with join attributes', () => {
+    it('check adding material to protocol with association attributes', () => {
       const testMaterial = {
         name: 'Test Material',
         description: 'Test Material Description',

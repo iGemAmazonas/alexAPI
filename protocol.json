@@ -1,0 +1,30 @@
+protocol
+{
+  "title": STRING, (required)
+  "description": TEXT, (required)
+  "protocolAuthors": {
+    "names": STRING, (required)
+    "article_title": STRING, (required)
+    "article_link": STRING, (optional)
+  }, (optional)
+  "protocolKeywords": [{
+    "id": INTEGER, (optional)
+    "word": STRING, (required)
+  },...], (required)
+  "ProtocolMaterials": [{
+    "id": INTEGER, (optional)
+    "name": STRING, (required)
+    "description": TEXT, (optional)
+    "quantity": INTEGER, (required)
+  },...], (required)
+  "ProtocolReagents": [{
+    "id": INTEGER, (optional)
+    "name": STRING, (required)
+    "description": TEXT, (optional)
+    "quantity": INTEGER, (required)
+    "unit": ENUM ['uL', 'mL', 'L', 'mg', 'g', 'kg'], (required)
+  },...], (required)
+  "ProtocolSteps": [{
+    "description": TEXT, (required)
+  },...], (required)
+}

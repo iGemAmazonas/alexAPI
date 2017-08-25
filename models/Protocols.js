@@ -23,7 +23,7 @@ export default (sequelize, DataType) => {
 
   Protocols.associate = (models) => {
     models.Protocols.belongsTo(models.Users, { as: 'creator' });
-    models.Users.hasMany(models.Protocols, { foreignKey: 'creator_id' });
+    models.Users.hasMany(models.Protocols, { foreignKey: 'creatorId' });
   };
 
   return Protocols;

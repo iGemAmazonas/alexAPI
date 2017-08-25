@@ -1,19 +1,15 @@
 import BaseController from './base';
-
-const  allAssociations = [
+/*
+const allAssociations = [
   { model: 'Steps' },
-  { model: 'Authors' },
+  { model: 'Articles' },
   { model: 'Keywords' },
   { model: 'ProtocolComments' },
   { model: 'ProtocolReagents' },
   { model: 'ProtocolMaterials' },
-];
+]; */
 
 class ProtocolsController extends BaseController {
-  constructor(Protocols) {
-    super(Protocols);
-  }
-
   sanitize(params) {
     return params;
   }
@@ -37,6 +33,6 @@ class ProtocolsController extends BaseController {
   delete(params) {
     return super.delete({ where: this.sanitize(params) });
   }
-};
+}
 
 export default ProtocolsController;

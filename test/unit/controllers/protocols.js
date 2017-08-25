@@ -11,10 +11,10 @@ describe('Controllers: Protocols', () => {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
-        created_at: '2016-08-06T23:55:36.692Z',
-        updated_at: '2016-08-06T23:55:36.692Z',
+        createdAt: '2016-08-06T23:55:36.692Z',
+        updatedAt: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocols.findAll({where: ''})).thenResolve(expectedResponse);
+      td.when(Protocols.findAll({ where: '' })).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
       return protocolsController.findAllByFilters('')
         .then(response => expect(response.data).to.be.eql(expectedResponse));
@@ -30,8 +30,8 @@ describe('Controllers: Protocols', () => {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
-        created_at: '2016-08-06T23:55:36.692Z',
-        updated_at: '2016-08-06T23:55:36.692Z',
+        createdAt: '2016-08-06T23:55:36.692Z',
+        updatedAt: '2016-08-06T23:55:36.692Z',
       }];
       td.when(Protocols.findOne({ where: { id: 1 } })).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
@@ -53,8 +53,8 @@ describe('Controllers: Protocols', () => {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
-        created_at: '2016-08-06T23:55:36.692Z',
-        updated_at: '2016-08-06T23:55:36.692Z',
+        createdAt: '2016-08-06T23:55:36.692Z',
+        updatedAt: '2016-08-06T23:55:36.692Z',
       }];
       td.when(Protocols.create(requestBody)).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
@@ -80,8 +80,8 @@ describe('Controllers: Protocols', () => {
         id: 1,
         title: 'Test Protocol Updated',
         description: 'Test Protocol Description',
-        created_at: '2016-08-06T23:55:36.692Z',
-        updated_at: '2016-08-06T23:55:36.692Z',
+        createdAt: '2016-08-06T23:55:36.692Z',
+        updatedAt: '2016-08-06T23:55:36.692Z',
       }];
       td.when(Protocols.update(requestBody, { where: { id: 1 } })).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);

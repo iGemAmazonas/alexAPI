@@ -1,21 +1,12 @@
 import ProtocolsController from '../controllers/protocols';
 
+function setResponse(response, res) {
+  res.status(response.statusCode);
+  res.json(response.data);
+}
+
 export default(app) => {
   const protocolsController = new ProtocolsController(app.datasource.models.Protocols);
-
-  app.route('/protocols')
-    .get(getAllRoute)
-    .post(createRoute);
-
-  app.route('/protocols/:id')
-    .get(getByIdRoute)
-    .put(updateRoute)
-    .delete(deleteRoute);
-
-  function setResponse(response, res) {
-    res.status(response.statusCode);
-    res.json(response.data);
-  }
 
   function getAllRoute(req, res) {
     protocolsController.findAllByFilters(req.params)
@@ -41,4 +32,13 @@ export default(app) => {
     protocolsController.delete(req.params)
       .then(response => res.sendStatus(response.statusCode));
   }
+
+  app.route('/protocols')
+    .get(getAllRoute)
+    .post(createRoute);
+
+  app.route('/protocols/:id')
+    .get(getByIdRoute)
+    .put(updateRoute)
+    .delete(deleteRoute);
 };

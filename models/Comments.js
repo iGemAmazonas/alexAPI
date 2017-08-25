@@ -20,7 +20,7 @@ export default (sequelize, DataType) => {
     models.Comments.hasOne(models.Comments, { as: 'replyOf' });
     // 1:N -> a Comment has a User (creator) and a User may have many Comments
     models.Comments.belongsTo(models.Users, { as: 'creator' });
-    models.Users.hasMany(models.Comments, { foreignKey: 'creator_id' });
+    models.Users.hasMany(models.Comments, { foreignKey: 'creatorId' });
     // 1:N -> a Comment can be a Project Comment and Project can have many Comments
     models.Comments.belongsTo(models.Projects, { through: 'ProjectComments' });
     models.Projects.belongsToMany(models.Comments, { through: 'ProjectComments' });

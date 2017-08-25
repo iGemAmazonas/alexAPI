@@ -1,21 +1,12 @@
 import UsersController from '../controllers/users';
 
+function setResponse(response, res) {
+  res.status(response.statusCode);
+  res.json(response.data);
+}
+
 export default(app) => {
   const usersController = new UsersController(app.datasource.models.Users);
-
-  app.route('/users')
-    .get(getAllRoute)
-    .post(createRoute);
-
-  app.route('/users/:id')
-    .get(getByIdRoute)
-    .put(updateRoute)
-    .delete(deleteRoute);
-
-  function setResponse(response, res) {
-    res.status(response.statusCode);
-    res.json(response.data);
-  }
 
   function getAllRoute(req, res) {
     usersController.findAllByFilters(req.params)
@@ -41,4 +32,13 @@ export default(app) => {
     usersController.delete(req.params)
       .then(response => res.sendStatus(response.statusCode));
   }
+
+  app.route('/users')
+    .get(getAllRoute)
+    .post(createRoute);
+
+  app.route('/users/:id')
+    .get(getByIdRoute)
+    .put(updateRoute)
+    .delete(deleteRoute);
 };

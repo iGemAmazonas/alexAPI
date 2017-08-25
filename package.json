@@ -10,7 +10,7 @@
     "test-integration": "cross-env NODE_ENV=test mocha --opts test/mocha.opts test/integration/**/*.js",
     "test": "cross-env NODE_ENV=test nyc mocha --opts test/mocha.opts test/**/**/*.js",
     "lint": "eslint --ignore-path .gitignore \"**/*.js\"",
-    "lint:fix": "eslint --ignore-path .gitignore  --fix \"**/*.js\""
+    "lint:fix": "eslint --ignore-path .gitignore --fix \"**/*.js\""
   },
   "nyc": {
     "require": [

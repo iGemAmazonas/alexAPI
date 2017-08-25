@@ -24,10 +24,19 @@ export default (sequelize, DataType) => {
   Reagents.associate = (models) => {
     sequelize.define('ProtocolReagents', {
       quantity: {
-        type: DataType.INTEGER,
+        type: DataType.FLOAT,
+        allowNull: false,
+        validade: {
+          notEmpty: true,
+        },
       },
       unit: {
-        type: DataType.STRING,
+        type: DataType.ENUM,
+        values: ['uL', 'mL', 'L', 'mg', 'g', 'kg'],
+        allowNull: false,
+        validade: {
+          notEmpty: true,
+        },
       },
     }, { timestamps: false });
     // N:M -> Creates join table with protocols_id and reagents_id

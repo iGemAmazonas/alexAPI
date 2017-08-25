@@ -11,19 +11,19 @@ describe('Routes: Protocols', () => {
       id: 1,
       title: 'Test Protocol',
       description: 'Default Protocol Description',
-      creator_id: 1,
+      creatorId: 1,
     },
     {
       id: 2,
       title: 'Test Protocol 2',
       description: 'Test Protocol 2 Description',
-      creator_id: 1,
+      creatorId: 1,
     },
     {
       id: 3,
       title: 'Test Protocol 3',
       description: 'Test Protocol 3 Description',
-      creator_id: 1,
+      creatorId: 1,
     },
   ];
 
@@ -35,21 +35,17 @@ describe('Routes: Protocols', () => {
         email: 'johndoe@email.com',
         password: '12345',
       }))
-      .then((user) => {
-        Protocols.destroy({ where: {} })
-          .then(() => Protocols.bulkCreate(protocolList))
+      .then(user => Protocols.destroy({ where: {} })
+        .then(() => Protocols.bulkCreate(protocolList)
           .then(() => {
             token = jwt.encode({ id: user.id }, jwtSecret);
             done();
-          });
-      });
+          })));
   });
   afterEach((done) => {
     Users.destroy({ where: {} })
-      .then(() => {
-        Protocols.destroy({ where: {} })
-          .then(() => done());
-      });
+      .then(() => Protocols.destroy({ where: {} })
+        .then(() => done()));
   });
 
   describe('Route GET /protocols', () => {
@@ -62,15 +58,15 @@ describe('Routes: Protocols', () => {
           expect(res.body[0].id).to.be.eql(protocolList[0].id);
           expect(res.body[0].title).to.be.eql(protocolList[0].title);
           expect(res.body[0].description).to.be.eql(protocolList[0].description);
-          expect(res.body[0].creator_id).to.be.eql(protocolList[0].creator_id);
+          expect(res.body[0].creatorId).to.be.eql(protocolList[0].creatorId);
           expect(res.body[1].id).to.be.eql(protocolList[1].id);
           expect(res.body[1].title).to.be.eql(protocolList[1].title);
           expect(res.body[1].description).to.be.eql(protocolList[1].description);
-          expect(res.body[1].creator_id).to.be.eql(protocolList[1].creator_id);
+          expect(res.body[1].creatorId).to.be.eql(protocolList[1].creatorId);
           expect(res.body[2].id).to.be.eql(protocolList[2].id);
           expect(res.body[2].title).to.be.eql(protocolList[2].title);
           expect(res.body[2].description).to.be.eql(protocolList[2].description);
-          expect(res.body[2].creator_id).to.be.eql(protocolList[2].creator_id);
+          expect(res.body[2].creatorId).to.be.eql(protocolList[2].creatorId);
           done(err);
         });
     });
@@ -85,7 +81,7 @@ describe('Routes: Protocols', () => {
           expect(res.body.id).to.be.eql(protocolList[0].id);
           expect(res.body.title).to.be.eql(protocolList[0].title);
           expect(res.body.description).to.be.eql(protocolList[0].description);
-          expect(res.body.creator_id).to.be.eql(protocolList[0].creator_id);
+          expect(res.body.creatorId).to.be.eql(protocolList[0].creatorId);
           done(err);
         });
     });
@@ -97,7 +93,7 @@ describe('Routes: Protocols', () => {
         id: 4,
         title: 'New Protocol',
         description: 'New Protocol Description',
-        user_id: 1,
+        creatorId: 1,
       };
       request
         .post('/protocols')
@@ -107,6 +103,7 @@ describe('Routes: Protocols', () => {
           expect(res.body.id).to.be.eql(newProtocol.id);
           expect(res.body.title).to.be.eql(newProtocol.title);
           expect(res.body.description).to.be.eql(newProtocol.description);
+          expect(res.body.creatorId).to.be.eql(newProtocol.creatorId);
           done(err);
         });
     });
