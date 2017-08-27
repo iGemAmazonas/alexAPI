@@ -14,9 +14,9 @@ describe('Controllers: Protocols', () => {
         createdAt: '2016-08-06T23:55:36.692Z',
         updatedAt: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocols.findAll({ where: '' })).thenResolve(expectedResponse);
+      td.when(Protocols.findAll({ where: {}})).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
-      return protocolsController.findAllByFilters('')
+      return protocolsController.findAllByFilters({})
         .then(response => expect(response.data).to.be.eql(expectedResponse));
     });
   });

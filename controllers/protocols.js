@@ -1,3 +1,4 @@
+import HttpStatus from 'http-status';
 import BaseController from './base';
 /*
 const allAssociations = [
@@ -11,27 +12,47 @@ const allAssociations = [
 
 class ProtocolsController extends BaseController {
   sanitize(params) {
-    return params;
+    return super.sanitize(params);
   }
 
   findAllByFilters(params) {
-    return super.findAllByFilters({ where: this.sanitize(params) });
+    try {
+      return super.findAllByFilters({ where: this.sanitize(params) })
+    } catch (error) {
+      return super.errorResponse(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   findById(params) {
-    return super.findById({ where: this.sanitize(params) });
+    try {
+      return super.findById({ where: this.sanitize(params) });
+    } catch (error) {
+      return super.errorResponse(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   create(data) {
-    return super.create(this.sanitize(data));
+    try {
+      return super.create(this.sanitize(data));
+    } catch (error) {
+      return super.errorResponse(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   update(data, params) {
-    return super.update(this.sanitize(data), { where: this.sanitize(params) });
+    try {
+      return super.update(this.sanitize(data), { where: this.sanitize(params) });
+    } catch (error) {
+      return super.errorResponse(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 
   delete(params) {
-    return super.delete({ where: this.sanitize(params) });
+    try {
+      return super.delete({ where: this.sanitize(params) });
+    } catch (error) {
+      return super.errorResponse(error.message, HttpStatus.BAD_REQUEST);
+    }
   }
 }
 
