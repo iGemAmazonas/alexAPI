@@ -7,6 +7,7 @@ import usersRouter from './routes/users';
 import authRouter from './routes/auth';
 import indexRouter from './routes/index';
 import authorization from './auth';
+import cors from 'cors';
 
 // Setup express as WebServer
 const app = express();
@@ -14,6 +15,15 @@ const app = express();
 app.config = config;
 // Setup database to use our defined datasource in config/datasource.js
 app.datasource = datasource(app);
+//Add cors in the routes
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.use(cors());
+
 // Setup authentication method
 const auth = authorization(app);
 app.use(auth.initialize());
