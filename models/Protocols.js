@@ -3,7 +3,7 @@ export default (sequelize, DataType) => {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
-      autoincrement: true,
+      autoIncrement: true,
     },
     title: {
       type: DataType.STRING,
@@ -22,8 +22,8 @@ export default (sequelize, DataType) => {
   });
 
   Protocols.associate = (models) => {
-    models.Protocols.belongsTo(models.Users, { as: 'creator' });
-    models.Users.hasMany(models.Protocols, { foreignKey: 'creatorId' });
+    models.Protocols.Creator = models.Protocols.belongsTo(models.Users, { as: 'Creator' });
+    models.Users.Protocols = models.Users.hasMany(models.Protocols, { foreignKey: 'CreatorId' });
   };
 
   return Protocols;

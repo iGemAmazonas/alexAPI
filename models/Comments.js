@@ -3,7 +3,7 @@ export default (sequelize, DataType) => {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
-      autoincrement: true,
+      autoIncrement: true,
     },
     text: {
       type: DataType.TEXT,
@@ -17,10 +17,10 @@ export default (sequelize, DataType) => {
   Comments.associate = (models) => {
     // 1:1 -> Creates replyOf_id attribute in Comments table from parent Comment
     // Define add/get/set/has ReplyOf methods in an comment instance
-    models.Comments.hasOne(models.Comments, { as: 'replyOf' });
+    models.Comments.hasOne(models.Comments, { as: 'ReplyOf' });
     // 1:N -> a Comment has a User (creator) and a User may have many Comments
-    models.Comments.belongsTo(models.Users, { as: 'creator' });
-    models.Users.hasMany(models.Comments, { foreignKey: 'creatorId' });
+    models.Comments.belongsTo(models.Users, { as: 'Creator' });
+    models.Users.hasMany(models.Comments, { foreignKey: 'CreatorId' });
     // 1:N -> a Comment can be a Project Comment and Project can have many Comments
     models.Comments.belongsTo(models.Projects, { through: 'ProjectComments' });
     models.Projects.belongsToMany(models.Comments, { through: 'ProjectComments' });

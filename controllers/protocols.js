@@ -1,14 +1,9 @@
 import HttpStatus from 'http-status';
 import BaseController from './base';
-/*
+
 const allAssociations = [
-  { model: 'Steps' },
-  { model: 'Articles' },
-  { model: 'Keywords' },
-  { model: 'ProtocolComments' },
-  { model: 'ProtocolReagents' },
-  { model: 'ProtocolMaterials' },
-]; */
+  { model: 'ProtocolKeywords' },
+];
 
 class ProtocolsController extends BaseController {
   sanitize(params) {
@@ -33,7 +28,7 @@ class ProtocolsController extends BaseController {
 
   create(data) {
     try {
-      return super.create(this.sanitize(data));
+      return super.create(this.sanitize(data), { include: allAssociations });
     } catch (error) {
       return super.errorResponse(error.message, HttpStatus.BAD_REQUEST);
     }

@@ -3,7 +3,7 @@ export default (sequelize, DataType) => {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
-      autoincrement: true,
+      autoIncrement: true,
     },
     description: {
       type: DataType.TEXT,
@@ -16,11 +16,11 @@ export default (sequelize, DataType) => {
 
   Steps.associate = (models) => {
     // 1:N -> A project has one creator and a user may have many projects
-    models.Steps.belongsTo(models.Users, { as: 'creator' });
-    models.Users.hasMany(models.Steps, { foreignKey: 'creatorId' });
+    models.Steps.Creator = models.Steps.belongsTo(models.Users, { as: 'Creator' });
+    models.Users.Steps = models.Users.hasMany(Steps, { foreignKey: 'CreatorId' });
     // 1:N
-    models.Steps.belongsTo(models.Protocols, { as: 'protocol' });
-    models.Protocols.hasMany(models.Steps, { foreignKey: 'protocolId' });
+    models.Steps.Protocol = models.Steps.belongsTo(models.Protocols);
+    models.Protocols.Steps = models.Protocols.hasMany(models.Steps, { foreignKey: 'ProtocolId' });
   };
 
   return Steps;

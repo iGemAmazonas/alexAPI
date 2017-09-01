@@ -23,7 +23,6 @@ class BaseController {
   }
 
   findAllByFilters(filters) {
-    console.log("Filters:" + JSON.stringify(filters));
     return this.Model.findAll(filters)
       .then(result => this.defaultResponse(result))
       .catch(error => this.errorResponse(error.message));

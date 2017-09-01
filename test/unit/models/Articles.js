@@ -2,13 +2,12 @@ describe('Models: Articles', () => {
   const Articles = app.datasource.models.Articles;
   const Protocols = app.datasource.models.Protocols;
 
-  beforeEach((done) => {
-    Articles.destroy({ where: {} })
-      .then(() => done());
+  before(() => {
+    return app.datasource.sequelize.sync();
   });
-  afterEach((done) => {
-    Articles.destroy({ where: {} })
-      .then(() => done());
+  beforeEach(() => {
+    return Articles.destroy({ where: {} })
+      .then(() => Protocols.destroy({ where: {} }));
   });
 
   describe('Create an Article:', () => {
@@ -34,32 +33,40 @@ describe('Models: Articles', () => {
           expect(response).to.have.property('id');
           expect(response).to.have.property('authors');
           expect(response).to.have.property('title');
-          expect(response).to.have.property('protocolId');
+          expect(response).to.have.property('ProtocolId');
         });
     });
 
-    it('should return an Article with id only after the find method', () => {
+    it('should return an Article with unknow title', () => {
       const testArticle = {
+        id: 1,
         authors: 'Test Article Authors',
       };
       return Articles.create(testArticle)
         .then((response) => {
-          expect(response.id).to.be.eql(null);
+          expect(response.id).to.be.eql(1);
           expect(response.authors).to.be.eql('Test Article Authors');
           expect(response.title).to.be.eql('Unknown');
-        })
-        .then(() => Articles.findAll()
-          .then((res) => {
-            expect(res).to.be.an('array');
-            expect(res.length).to.be.eql(1);
-            expect(res[0].id).to.be.eql(1);
-            expect(res[0].authors).to.be.eql('Test Article Authors');
-            expect(res[0].title).to.be.eql('Unknown');
-          }));
+        });
+    });
+
+    it('should return an Article', () => {
+      const testArticle = {
+        id: 1,
+        authors: 'Test Article Authors',
+        title: 'Test Article Title',
+      };
+      return Articles.create(testArticle)
+        .then((response) => {
+          expect(response.id).to.be.eql(1);
+          expect(response.authors).to.be.eql('Test Article Authors');
+          expect(response.title).to.be.eql('Test Article Title');
+        });
     });
 
     it('should not create an Article with id equal to existing', () => {
       const testArticle1 = {
+        id: 1,
         authors: 'Test Article Authors',
         title: 'Test Article Title',
       };
@@ -85,19 +92,18 @@ describe('Models: Articles', () => {
         title: 'Test Article Title',
       };
       return Articles.create(testArticle)
-        .then(() => Articles.findById(1)
-          .then((response) => {
-            expect(response).to.not.have.property('addProtocol');
-            expect(response).to.not.have.property('addProtocols');
-            expect(response).to.have.property('getProtocol');
-            expect(response).to.not.have.property('getProtocols');
-            expect(response).to.have.property('setProtocol');
-            expect(response).to.not.have.property('setProtocols');
-            expect(response).to.not.have.property('hasProtocol');
-            expect(response).to.not.have.property('hasProtocols');
-            expect(response).to.not.have.property('Protocol');
-            expect(response).to.not.have.property('Protocols');
-          }));
+        .then((response) => {
+          expect(response).to.not.have.property('addProtocol');
+          expect(response).to.not.have.property('addProtocols');
+          expect(response).to.have.property('getProtocol');
+          expect(response).to.not.have.property('getProtocols');
+          expect(response).to.have.property('setProtocol');
+          expect(response).to.not.have.property('setProtocols');
+          expect(response).to.not.have.property('hasProtocol');
+          expect(response).to.not.have.property('hasProtocols');
+          expect(response).to.not.have.property('Protocol');
+          expect(response).to.not.have.property('Protocols');
+        });
     });
 
     it('check if associated Protocol has all attributes', () => {
@@ -110,16 +116,14 @@ describe('Models: Articles', () => {
         description: 'Test Protocol Description',
       };
       return Articles.create(testArticle)
-        .then(() => Protocols.create(testProtocol)
-          .then(() => Articles.findById(1)
-            .then(article => Protocols.findById(1)
-              .then(protocol => article.setProtocol(protocol)
-                .then(() => article.getProtocol()
-                  .then((res) => {
-                    expect(res.id).to.be.eql(1);
-                    expect(res.title).to.be.eql(testProtocol.title);
-                    expect(res.description).to.be.eql(testProtocol.description);
-                  }))))));
+        .then((article) => Protocols.create(testProtocol)
+          .then(protocol => article.setProtocol(protocol)
+            .then(() => article.getProtocol()
+              .then((res) => {
+                expect(res.id).to.be.eql(protocol.id);
+                expect(res.title).to.be.eql(protocol.title);
+                expect(res.description).to.be.eql(protocol.description);
+              }))));
     });
 
     it('check if associated article has all attributes', () => {
@@ -131,16 +135,14 @@ describe('Models: Articles', () => {
         description: 'Test Protocol Description',
       };
       return Articles.create(testArticle)
-        .then(() => Protocols.create(testProtocol)
-          .then(() => Articles.findById(1)
-            .then(article => Protocols.findById(1)
-              .then(protocol => article.setProtocol(protocol)
-                .then(() => protocol.getArticle()
-                  .then((res) => {
-                    expect(res.id).to.be.eql(article.id);
-                    expect(res.authors).to.be.eql(article.authors);
-                    expect(res.title).to.be.eql('Unknown');
-                  }))))));
+        .then((article) => Protocols.create(testProtocol)
+          .then(protocol => article.setProtocol(protocol)
+            .then(() => protocol.getArticle()
+              .then((res) => {
+                expect(res.id).to.be.eql(article.id);
+                expect(res.authors).to.be.eql(article.authors);
+                expect(res.title).to.be.eql(article.title);
+              }))));
     });
   });
 });

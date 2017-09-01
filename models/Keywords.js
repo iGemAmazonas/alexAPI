@@ -3,7 +3,7 @@ export default (sequelize, DataType) => {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
-      autoincrement: true,
+      autoIncrement: true,
     },
     word: {
       type: DataType.STRING,
@@ -18,8 +18,8 @@ export default (sequelize, DataType) => {
     // N:M -> Creates join table with protocols_id and keywords_id
     // Define add/get/set/has Protocols methods in an keyword instance
     // Define add/get/set/has Keywords methods in a protocol instance
-    models.Keywords.belongsToMany(models.Protocols, { through: 'ProtocolKeywords' });
-    models.Protocols.belongsToMany(models.Keywords, { through: 'ProtocolKeywords' });
+    models.Keywords.Protocols = models.Keywords.belongsToMany(models.Protocols, { through: 'ProtocolKeywords' });
+    models.Protocols.Keywords = models.Protocols.belongsToMany(models.Keywords, { through: 'ProtocolKeywords' });
   };
 
   return Keywords;

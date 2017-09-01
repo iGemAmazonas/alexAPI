@@ -3,7 +3,7 @@ export default (sequelize, DataType) => {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
-      autoincrement: true,
+      autoIncrement: true,
     },
     authors: {
       type: DataType.STRING,
@@ -31,8 +31,8 @@ export default (sequelize, DataType) => {
     // 1:1 -> Creates protocol_id attribute in Articles table
     // Define add/get/set/has Protocol methods in an articles instance
     // Define add/get/set/has Articles methods in a protocol instance
-    models.Articles.belongsTo(models.Protocols, { as: 'protocol' });
-    models.Protocols.hasOne(models.Articles, { foreignKey: 'protocolId' });
+    models.Articles.Protocol = models.Articles.belongsTo(models.Protocols);
+    models.Protocols.Article = models.Protocols.hasOne(models.Articles, { foreignKey: 'ProtocolId' });
   };
 
   return Articles;

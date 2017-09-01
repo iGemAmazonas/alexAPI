@@ -3,7 +3,7 @@ export default (sequelize, DataType) => {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
-      autoincrement: true,
+      autoIncrement: true,
     },
     name: {
       type: DataType.STRING,
@@ -34,8 +34,8 @@ export default (sequelize, DataType) => {
     // N:M -> Creates join table with protocols_id and materials_id
     // Define add/get/set/has Protocols methods in an material instance
     // Define add/get/set/has Materials methods in a protocol instance
-    models.Materials.belongsToMany(models.Protocols, { through: 'ProtocolMaterials' });
-    models.Protocols.belongsToMany(models.Materials, { through: 'ProtocolMaterials' });
+    models.Materials.Protocols = models.Materials.belongsToMany(models.Protocols, { through: 'ProtocolMaterials' });
+    models.Protocols.Materials = models.Protocols.belongsToMany(models.Materials, { through: 'ProtocolMaterials' });
   };
 
   return Materials;

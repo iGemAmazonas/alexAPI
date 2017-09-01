@@ -3,7 +3,7 @@ export default (sequelize, DataType) => {
     id: {
       type: DataType.INTEGER,
       primaryKey: true,
-      autoincrement: true,
+      autoIncrement: true,
     },
     title: {
       type: DataType.STRING,
@@ -33,8 +33,8 @@ export default (sequelize, DataType) => {
     models.Projects.belongsToMany(models.Users, { through: 'ProjectParticipants' });
     models.Users.belongsToMany(models.Projects, { through: 'ProjectParticipants' });
     // 1:N -> A project has one creator and a user may have many projects
-    models.Projects.belongsTo(models.Users, { as: 'creator' });
-    models.Users.hasMany(models.Projects, { foreignKey: 'creatorId' });
+    models.Projects.belongsTo(models.Users, { as: 'Creator' });
+    models.Users.hasMany(models.Projects, { foreignKey: 'CreatorId' });
   };
 
   return Projects;
