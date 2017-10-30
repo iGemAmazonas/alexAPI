@@ -1,4 +1,4 @@
-describe('Routes: Users', () => {
+describe('Routes: Users.', () => {
   const Users = app.datasource.models.Users;
   const userList = [
     {
@@ -21,15 +21,10 @@ describe('Routes: Users', () => {
     },
   ];
 
+  before(() => app.datasource.sequelize.sync());
   beforeEach((done) => {
-    Users
-      .destroy({ where: {} })
+    Users.destroy({ where: {} })
       .then(() => Users.bulkCreate(userList))
-      .then(() => done());
-  });
-  afterEach((done) => {
-    Users
-      .destroy({ where: {} })
       .then(() => done());
   });
 

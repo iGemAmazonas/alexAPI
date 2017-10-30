@@ -14,7 +14,6 @@ export default (sequelize, DataType) => {
     },
     description: {
       type: DataType.STRING,
-      allowNull: false,
       validade: {
         notEmpty: true,
       },
@@ -22,20 +21,11 @@ export default (sequelize, DataType) => {
   });
 
   Materials.associate = (models) => {
-    sequelize.define('ProtocolMaterials', {
-      quantity: {
-        type: DataType.INTEGER,
-        allowNull: false,
-        validade: {
-          notEmpty: true,
-        },
-      },
-    }, { timestamps: false });
-    // N:M -> Creates join table with protocols_id and materials_id
+    // N:M -> Creates join table with ProtocolId and MaterialId
     // Define add/get/set/has Protocols methods in an material instance
     // Define add/get/set/has Materials methods in a protocol instance
-    models.Materials.Protocols = models.Materials.belongsToMany(models.Protocols, { through: 'ProtocolMaterials' });
-    models.Protocols.Materials = models.Protocols.belongsToMany(models.Materials, { through: 'ProtocolMaterials' });
+    models.Materials.belongsToMany(models.Protocols, { through: 'ProtocolMaterials' });
+    models.Protocols.belongsToMany(models.Materials, { through: 'ProtocolMaterials' });
   };
 
   return Materials;

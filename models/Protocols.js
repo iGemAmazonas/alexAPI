@@ -22,8 +22,11 @@ export default (sequelize, DataType) => {
   });
 
   Protocols.associate = (models) => {
-    models.Protocols.Creator = models.Protocols.belongsTo(models.Users, { as: 'Creator' });
-    models.Users.Protocols = models.Users.hasMany(models.Protocols, { foreignKey: 'CreatorId' });
+    // 1:M -> Creates an attribute CreatorId in table Protocols
+    // Define get/set Creator methods in a protocol instance
+    // Define add/get/set/has Protocols methods in an user instance
+    models.Protocols.belongsTo(models.Users, { as: 'Creator' });
+    models.Users.hasMany(models.Protocols, { foreignKey: 'CreatorId' });
   };
 
   return Protocols;

@@ -17,12 +17,17 @@ export default(app) => {
             const payload = { id: user.id };
             res.json({ token: jwt.encode(payload, config.jwtSecret) });
           } else {
-            res.sendStatus(HttpStatus.UNAUTHORIZED);
+            res.status(HttpStatus.UNAUTHORIZED);
+            res.json({ error: "email and password doesn't match" });
           }
         })
-        .catch(() => res.sendStatus(HttpStatus.UNAUTHORIZED));
+        .catch(() => {
+          res.status(HttpStatus.UNAUTHORIZED);
+          res.json({ error: 'email not found' });
+        });
     } else {
-      res.sendStatus(HttpStatus.UNAUTHORIZED);
+      res.status(HttpStatus.BAD_REQUEST);
+      res.json({ error: 'email and password are required' });
     }
   });
 };

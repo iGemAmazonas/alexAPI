@@ -1,11 +1,12 @@
 {
   "extends": "airbnb",
   "rules": {
-    "semi": 2,    
+    "semi": 2,
     "no-param-reassign": [ "error",  { "props": false } ]
   },
   "globals": {
     "app": true,
+    "before": true,
     "afterEach": true,
     "beforeEach": true,
     "describe": true,
@@ -14,6 +15,6 @@
     "Joi": true,
     "joiAssert": true,
     "request": true,
-    "td": true
+    "td": true,
   }
 }

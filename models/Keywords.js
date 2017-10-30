@@ -12,14 +12,20 @@ export default (sequelize, DataType) => {
         notEmpty: true,
       },
     },
+    color: {
+      type: DataType.STRING,
+      validade: {
+        notEmpty: true,
+      },
+    },
   });
 
   Keywords.associate = (models) => {
-    // N:M -> Creates join table with protocols_id and keywords_id
+    // N:M -> Creates join table with ProtocolId and KeywordId
     // Define add/get/set/has Protocols methods in an keyword instance
     // Define add/get/set/has Keywords methods in a protocol instance
-    models.Keywords.Protocols = models.Keywords.belongsToMany(models.Protocols, { through: 'ProtocolKeywords' });
-    models.Protocols.Keywords = models.Protocols.belongsToMany(models.Keywords, { through: 'ProtocolKeywords' });
+    models.Keywords.belongsToMany(models.Protocols, { through: 'ProtocolKeywords' });
+    models.Protocols.belongsToMany(models.Keywords, { through: 'ProtocolKeywords' });
   };
 
   return Keywords;

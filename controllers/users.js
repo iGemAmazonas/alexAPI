@@ -1,28 +1,52 @@
-import BaseController from './base';
+import BaseController from './bases';
+
 
 class UsersController extends BaseController {
-  sanitize(params) {
-    return params;
+
+  static sanitize(params) {
+    return BaseController.sanitize(params);
   }
 
   findAllByFilters(params) {
-    return super.findAllByFilters({ where: this.sanitize(params) });
+    try {
+      return super.findAllByFilters({ where: UsersController.sanitize(params) });
+    } catch (error) {
+      return BaseController.returnErrorResponsePromise(error);
+    }
   }
 
   findById(params) {
-    return super.findById({ where: this.sanitize(params) });
+    try {
+      return super.findById({ where: UsersController.sanitize(params) });
+    } catch (error) {
+      return BaseController.returnErrorResponsePromise(error);
+    }
   }
 
   create(data) {
-    return super.create(this.sanitize(data));
+    try {
+      return super.create(UsersController.sanitize(data));
+    } catch (error) {
+      return BaseController.returnErrorResponsePromise(error);
+    }
   }
 
   update(data, params) {
-    return super.update(this.sanitize(data), { where: this.sanitize(params) });
+    try {
+      return super.update(
+        UsersController.sanitize(data),
+        { where: UsersController.sanitize(params) });
+    } catch (error) {
+      return BaseController.returnErrorResponsePromise(error);
+    }
   }
 
   delete(params) {
-    return super.delete({ where: this.sanitize(params) });
+    try {
+      return super.delete({ where: UsersController.sanitize(params) });
+    } catch (error) {
+      return BaseController.returnErrorResponsePromise(error);
+    }
   }
 }
 

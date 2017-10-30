@@ -12,7 +12,7 @@ export default (sequelize, DataType) => {
         notEmpty: true,
       },
     },
-  }, { timestamps: false });
+  });
 
   Comments.associate = (models) => {
     // 1:1 -> Creates replyOf_id attribute in Comments table from parent Comment
@@ -21,18 +21,9 @@ export default (sequelize, DataType) => {
     // 1:N -> a Comment has a User (creator) and a User may have many Comments
     models.Comments.belongsTo(models.Users, { as: 'Creator' });
     models.Users.hasMany(models.Comments, { foreignKey: 'CreatorId' });
-    // 1:N -> a Comment can be a Project Comment and Project can have many Comments
-    models.Comments.belongsTo(models.Projects, { through: 'ProjectComments' });
-    models.Projects.belongsToMany(models.Comments, { through: 'ProjectComments' });
-    // 1:N -> a Comment can be a Experiment Comment and Experiment can have many Comments
-    models.Comments.belongsTo(models.Experiments, { through: 'ExperimentComments' });
-    models.Experiments.belongsToMany(models.Comments, { through: 'ExperimentComments' });
     // 1:N -> a Comment can be a Protocol Comment and Protocol can have many Comments
     models.Comments.belongsTo(models.Protocols, { through: 'ProtocolComments' });
     models.Protocols.belongsToMany(models.Comments, { through: 'ProtocolComments' });
-    // 1:N -> a Comment can be a Step Comment and Step can have many Comments
-    models.Comments.belongsTo(models.Steps, { through: 'StepComments' });
-    models.Steps.belongsToMany(models.Comments, { through: 'StepComments' });
   };
 
   return Comments;

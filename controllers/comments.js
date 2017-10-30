@@ -1,7 +1,7 @@
 import BaseController from './bases';
 
 
-class ProtocolsController extends BaseController {
+class CommentsController extends BaseController {
 
   static sanitize(params) {
     return BaseController.sanitize(params);
@@ -9,7 +9,7 @@ class ProtocolsController extends BaseController {
 
   findAllByFilters(params) {
     try {
-      return super.findAllByFilters({ where: ProtocolsController.sanitize(params) });
+      return super.findAllByFilters({ where: CommentsController.sanitize(params) });
     } catch (error) {
       return BaseController.returnErrorResponsePromise(error);
     }
@@ -17,9 +17,7 @@ class ProtocolsController extends BaseController {
 
   findById(params) {
     try {
-      return super.findById({
-        where: ProtocolsController.sanitize(params),
-        include: ['Keywords', 'Materials', 'Equipments', 'Steps', 'References', 'Comments'] });
+      return super.findById({ where: CommentsController.sanitize(params) });
     } catch (error) {
       return BaseController.returnErrorResponsePromise(error);
     }
@@ -27,7 +25,7 @@ class ProtocolsController extends BaseController {
 
   create(data) {
     try {
-      return super.create(ProtocolsController.sanitize(data), { include: ['Steps'] });
+      return super.create(CommentsController.sanitize(data));
     } catch (error) {
       return BaseController.returnErrorResponsePromise(error);
     }
@@ -36,8 +34,8 @@ class ProtocolsController extends BaseController {
   update(data, params) {
     try {
       return super.update(
-        ProtocolsController.sanitize(data),
-        { where: ProtocolsController.sanitize(params), include: ['Steps'] });
+        CommentsController.sanitize(data),
+        { where: CommentsController.sanitize(params) });
     } catch (error) {
       return BaseController.returnErrorResponsePromise(error);
     }
@@ -45,11 +43,11 @@ class ProtocolsController extends BaseController {
 
   delete(params) {
     try {
-      return super.delete({ where: ProtocolsController.sanitize(params), include: ['Steps'] });
+      return super.delete({ where: CommentsController.sanitize(params) });
     } catch (error) {
       return BaseController.returnErrorResponsePromise(error);
     }
   }
 }
 
-export default ProtocolsController;
+export default CommentsController;

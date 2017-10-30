@@ -1,18 +1,18 @@
-describe('Models: Materials.', () => {
-  const Materials = app.datasource.models.Materials;
+describe('Models: Equipments.', () => {
+  const Equipments = app.datasource.models.Equipments;
   const Protocols = app.datasource.models.Protocols;
 
   before(() => app.datasource.sequelize.sync());
-  beforeEach(() => Materials.destroy({ where: {} })
+  beforeEach(() => Equipments.destroy({ where: {} })
     .then(() => Protocols.destroy({ where: {} })));
 
-  describe('Create a Material:', () => {
-    it('should not create a Material if dont have required field name', () => {
-      const testMaterial = {
+  describe('Create a Equipment:', () => {
+    it('should not create a Equipment if dont have required field name', () => {
+      const testEquipment = {
         id: 1,
-        description: 'Test Material Description',
+        description: 'Test Equipment Description',
       };
-      return Materials.create(testMaterial)
+      return Equipments.create(testEquipment)
         .then(() => expect.to.fail('', '', 'Should throw exception'))
         .catch((error) => {
           expect(error.name).to.be.eql('SequelizeValidationError');
@@ -20,12 +20,12 @@ describe('Models: Materials.', () => {
         });
     });
 
-    it('should return a Material with defined model properties', () => {
-      const testMaterial = {
-        name: 'Test Material',
-        description: 'Test Material Description',
+    it('should return a Equipment with defined model properties', () => {
+      const testEquipment = {
+        name: 'Test Equipment',
+        description: 'Test Equipment Description',
       };
-      return Materials.create(testMaterial)
+      return Equipments.create(testEquipment)
         .then((response) => {
           expect(response).to.have.property('id');
           expect(response).to.have.property('name');
@@ -35,35 +35,35 @@ describe('Models: Materials.', () => {
         });
     });
 
-    it('should return a Material', () => {
-      const testMaterial = {
+    it('should return a Equipment', () => {
+      const testEquipment = {
         id: 1,
-        name: 'Test Material',
-        description: 'Test Material Description',
+        name: 'Test Equipment',
+        description: 'Test Equipment Description',
       };
-      return Materials.create(testMaterial)
+      return Equipments.create(testEquipment)
         .then((response) => {
           expect(response.id).to.be.eql(1);
-          expect(response.name).to.be.eql('Test Material');
-          expect(response.description).to.be.eql('Test Material Description');
+          expect(response.name).to.be.eql('Test Equipment');
+          expect(response.description).to.be.eql('Test Equipment Description');
           expect(response.createdAt).to.be.a('Date');
           expect(response.updatedAt).to.be.a('Date');
         });
     });
 
-    it('should not create a Material with id equal to existing', () => {
-      const testMaterial1 = {
+    it('should not create a Equipment with id equal to existing', () => {
+      const testEquipment1 = {
         id: 1,
-        name: 'Test Material',
-        description: 'Test Material 1 Description',
+        name: 'Test Equipment',
+        description: 'Test Equipment 1 Description',
       };
-      const testMaterial2 = {
+      const testEquipment2 = {
         id: 1,
-        name: 'Test Material 2',
-        description: 'Test Material 2 Description',
+        name: 'Test Equipment 2',
+        description: 'Test Equipment 2 Description',
       };
-      return Materials.create(testMaterial1)
-        .then(() => Materials.create(testMaterial2))
+      return Equipments.create(testEquipment1)
+        .then(() => Equipments.create(testEquipment2))
         .then(() => expect.to.fail('', '', 'Should throw exception'))
         .catch((error) => {
           expect(error.name).to.be.eql('SequelizeUniqueConstraintError');
@@ -73,13 +73,13 @@ describe('Models: Materials.', () => {
   });
 
   describe('Association with Protocol:', () => {
-    it('check if a material has add/get/set/has Protocols properties defined', () => {
-      const testMaterial = {
+    it('check if a equipment has add/get/set/has Protocols properties defined', () => {
+      const testEquipment = {
         id: 1,
-        name: 'Test Material',
-        description: 'Test Material Description',
+        name: 'Test Equipment',
+        description: 'Test Equipment Description',
       };
-      return Materials.create(testMaterial)
+      return Equipments.create(testEquipment)
         .then((response) => {
           expect(response).to.have.property('addProtocol');
           expect(response).to.have.property('addProtocols');
@@ -89,46 +89,46 @@ describe('Models: Materials.', () => {
           expect(response).to.have.property('setProtocols');
           expect(response).to.have.property('hasProtocol');
           expect(response).to.have.property('hasProtocols');
-          expect(response).to.not.have.property('ProtocolMaterials');
-          expect(response).to.not.have.property('ProtocolMaterial');
+          expect(response).to.not.have.property('ProtocolEquipments');
+          expect(response).to.not.have.property('ProtocolEquipment');
           expect(response).to.not.have.property('Protocols');
           expect(response).to.not.have.property('Protocol');
         });
     });
 
     it('check if Protocol was associated', () => {
-      const testMaterial = {
+      const testEquipment = {
         id: 1,
-        name: 'Test Material',
-        description: 'Test Material Description',
+        name: 'Test Equipment',
+        description: 'Test Equipment Description',
       };
       const testProtocol = {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
       };
-      return Materials.create(testMaterial)
-        .then(material => Protocols.create(testProtocol)
-          .then(protocol => material.addProtocol(protocol)
-            .then(() => material.hasProtocol(protocol)
+      return Equipments.create(testEquipment)
+        .then(equipment => Protocols.create(testProtocol)
+          .then(protocol => equipment.addProtocol(protocol)
+            .then(() => equipment.hasProtocol(protocol)
               .then(res => expect(res).to.be.true))));
     });
 
     it('check if associated Protocol has all attributes', () => {
-      const testMaterial = {
+      const testEquipment = {
         id: 1,
-        name: 'Test Material',
-        description: 'Test Material Description',
+        name: 'Test Equipment',
+        description: 'Test Equipment Description',
       };
       const testProtocol = {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
       };
-      return Materials.create(testMaterial)
-        .then(material => Protocols.create(testProtocol)
-          .then(protocol => material.setProtocols([protocol])
-            .then(() => material.getProtocols()
+      return Equipments.create(testEquipment)
+        .then(equipment => Protocols.create(testProtocol)
+          .then(protocol => equipment.setProtocols([protocol])
+            .then(() => equipment.getProtocols()
               .then((res) => {
                 expect(res).to.be.an('array');
                 expect(res.length).to.be.eql(1);

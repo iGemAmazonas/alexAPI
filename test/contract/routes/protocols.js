@@ -1,7 +1,7 @@
 import jwt from 'jwt-simple';
 import HttpStatus from 'http-status';
 
-describe('Contracts: Protocols', () => {
+describe('Contracts: Protocols.', () => {
   const Protocols = app.datasource.models.Protocols;
   const Users = app.datasource.models.Users;
   const jwtSecret = app.config.jwtSecret;
@@ -9,46 +9,38 @@ describe('Contracts: Protocols', () => {
 
   const protocolList = [
     {
+      id: 1,
       title: 'Test Protocol 1',
       description: 'Test Protocol 1 Description',
-      creatorId: 1,
+      CreatorId: 1,
     },
     {
+      id: 2,
       title: 'Test Protocol 2',
       description: 'Test Protocol 2 Description',
-      creatorId: 1,
+      CreatorId: 1,
     },
     {
+      id: 3,
       title: 'Test Protocol 3',
       description: 'Test Protocol 3 Description',
-      creatorId: 1,
+      CreatorId: 1,
     },
   ];
 
-  beforeEach((done) => {
-    Users.destroy({ where: {} })
+  before(() => app.datasource.sequelize.sync());
+  beforeEach(() => Users.destroy({ where: {} })
       .then(() => Users.create({
         id: 1,
         name: 'John Doe',
         email: 'johndoe@email.com',
         password: '12345',
       }))
-      .then((user) => {
-        Protocols.destroy({ where: {} })
-          .then(() => Protocols.bulkCreate(protocolList))
+      .then(user => Protocols.destroy({ where: {} })
+        .then(() => Protocols.bulkCreate(protocolList)
           .then(() => {
             token = jwt.encode({ id: user.id }, jwtSecret);
-            done();
-          });
-      });
-  });
-  afterEach((done) => {
-    Users.destroy({ where: {} })
-      .then(() => {
-        Protocols.destroy({ where: {} })
-          .then(() => done());
-      });
-  });
+          }))));
 
   describe('Route GET /protocols', () => {
     it('should return a list of all protocols', (done) => {
@@ -58,11 +50,10 @@ describe('Contracts: Protocols', () => {
         description: Joi.string(),
         createdAt: Joi.date().iso(),
         updatedAt: Joi.date().iso(),
-        creatorId: Joi.number(),
+        CreatorId: Joi.number(),
       }));
       request
         .get('/protocols')
-        .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           joiAssert(res.body, joiProtocolList);
           done(err);
@@ -78,11 +69,16 @@ describe('Contracts: Protocols', () => {
         description: Joi.string(),
         createdAt: Joi.date().iso(),
         updatedAt: Joi.date().iso(),
-        creatorId: Joi.number(),
+        CreatorId: Joi.number(),
+        Keywords: Joi.array(),
+        Materials: Joi.array(),
+        Equipments: Joi.array(),
+        Steps: Joi.array(),
+        References: Joi.array(),
+        Comments: Joi.array(),
       });
       request
         .get('/protocols/1')
-        .set('Authorization', `JWT ${token}`)
         .end((err, res) => {
           joiAssert(res.body, joiProtocol);
           done(err);
@@ -98,11 +94,13 @@ describe('Contracts: Protocols', () => {
         description: Joi.string(),
         createdAt: Joi.date().iso(),
         updatedAt: Joi.date().iso(),
+        CreatorId: Joi.number(),
       });
       const newProtocol = {
         id: 4,
         title: 'New Protocol',
         description: 'New Protocol Description',
+        CreatorId: 1,
       };
       request
         .post('/protocols')
@@ -122,6 +120,7 @@ describe('Contracts: Protocols', () => {
         id: 1,
         title: 'Updated Protocol',
         description: 'Updated Protocol Description',
+        CreatorId: 1,
       };
       request
         .put('/protocols/1')

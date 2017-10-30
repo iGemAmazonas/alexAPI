@@ -1,7 +1,7 @@
 import HttpStatus from 'http-status';
 import ProtocolsController from '../../../controllers/protocols';
 
-describe('Controllers: Protocols', () => {
+describe('Controllers: Protocols.', () => {
   describe('Get all protocols: getAll()', () => {
     it('should return a list of all protocols', () => {
       const Protocols = {
@@ -11,13 +11,23 @@ describe('Controllers: Protocols', () => {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
-        createdAt: '2016-08-06T23:55:36.692Z',
-        updatedAt: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocols.findAll({ where: {}})).thenResolve(expectedResponse);
+      td.when(Protocols.findAll({ where: {} })).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
-      return protocolsController.findAllByFilters({})
-        .then(response => expect(response.data).to.be.eql(expectedResponse));
+      return protocolsController.findAllByFilters()
+        .then((response) => {
+          expect(response.statusCode).to.be.eql(HttpStatus.OK);
+          expect(response.data).to.be.eql(expectedResponse);
+        });
+    });
+
+    it('should return BAD REQUEST error', () => {
+      const protocolsController = new ProtocolsController();
+      return protocolsController.findAllByFilters('')
+        .then((response) => {
+          expect(response.statusCode).to.be.eql(HttpStatus.BAD_REQUEST);
+          expect(response.data.error).to.be.eql('Filters cannot be empty');
+        });
     });
   });
 
@@ -30,13 +40,25 @@ describe('Controllers: Protocols', () => {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
-        createdAt: '2016-08-06T23:55:36.692Z',
-        updatedAt: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocols.findOne({ where: { id: 1 } })).thenResolve(expectedResponse);
+      td.when(Protocols.findOne({ where: { id: 1 },
+        include: ['Keywords', 'Materials', 'Equipments', 'Steps', 'References', 'Comments'] }))
+        .thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
       return protocolsController.findById({ id: 1 })
-        .then(response => expect(response.data).to.be.eql(expectedResponse));
+        .then((response) => {
+          expect(response.statusCode).to.be.eql(HttpStatus.OK);
+          expect(response.data).to.be.eql(expectedResponse);
+        });
+    });
+
+    it('should return BAD REQUEST error', () => {
+      const protocolsController = new ProtocolsController();
+      return protocolsController.findById('')
+        .then((response) => {
+          expect(response.statusCode).to.be.eql(HttpStatus.BAD_REQUEST);
+          expect(response.data.error).to.be.eql('Filters cannot be empty');
+        });
     });
   });
 
@@ -53,15 +75,22 @@ describe('Controllers: Protocols', () => {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
-        createdAt: '2016-08-06T23:55:36.692Z',
-        updatedAt: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocols.create(requestBody)).thenResolve(expectedResponse);
+      td.when(Protocols.create(requestBody, { include: ['Steps'] })).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
       return protocolsController.create(requestBody)
         .then((response) => {
           expect(response.statusCode).to.be.eql(HttpStatus.CREATED);
           expect(response.data).to.be.eql(expectedResponse);
+        });
+    });
+
+    it('should return BAD REQUEST error', () => {
+      const protocolsController = new ProtocolsController();
+      return protocolsController.create('')
+        .then((response) => {
+          expect(response.statusCode).to.be.eql(HttpStatus.BAD_REQUEST);
+          expect(response.data.error).to.be.eql('Filters cannot be empty');
         });
     });
   });
@@ -80,15 +109,22 @@ describe('Controllers: Protocols', () => {
         id: 1,
         title: 'Test Protocol Updated',
         description: 'Test Protocol Description',
-        createdAt: '2016-08-06T23:55:36.692Z',
-        updatedAt: '2016-08-06T23:55:36.692Z',
       }];
-      td.when(Protocols.update(requestBody, { where: { id: 1 } })).thenResolve(expectedResponse);
+      td.when(Protocols.update(requestBody, { where: { id: 1 }, include: ['Steps'] })).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
       return protocolsController.update(requestBody, { id: 1 })
         .then((response) => {
           expect(response.statusCode).to.be.eql(HttpStatus.OK);
           expect(response.data).to.be.eql(expectedResponse);
+        });
+    });
+
+    it('should return BAD REQUEST error', () => {
+      const protocolsController = new ProtocolsController();
+      return protocolsController.update('', '')
+        .then((response) => {
+          expect(response.statusCode).to.be.eql(HttpStatus.BAD_REQUEST);
+          expect(response.data.error).to.be.eql('Filters cannot be empty');
         });
     });
   });
@@ -98,10 +134,19 @@ describe('Controllers: Protocols', () => {
       const Protocols = {
         destroy: td.function(),
       };
-      td.when(Protocols.destroy({ where: { id: 1 } })).thenResolve({});
+      td.when(Protocols.destroy({ where: { id: 1 }, include: ['Steps'] })).thenResolve({});
       const protocolsController = new ProtocolsController(Protocols);
       return protocolsController.delete({ id: 1 })
         .then(response => expect(response.statusCode).to.be.eql(HttpStatus.NO_CONTENT));
+    });
+
+    it('should return BAD REQUEST error', () => {
+      const protocolsController = new ProtocolsController();
+      return protocolsController.delete('')
+        .then((response) => {
+          expect(response.statusCode).to.be.eql(HttpStatus.BAD_REQUEST);
+          expect(response.data.error).to.be.eql('Filters cannot be empty');
+        });
     });
   });
 });

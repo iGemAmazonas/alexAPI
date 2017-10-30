@@ -1,7 +1,8 @@
 import jwt from 'jwt-simple';
 
-describe('Routes: Protocols', () => {
+describe('Routes: Protocols.', () => {
   const Protocols = app.datasource.models.Protocols;
+  const Keywords = app.datasource.models.Keywords;
   const Users = app.datasource.models.Users;
   const jwtSecret = app.config.jwtSecret;
   let token;
@@ -11,42 +12,37 @@ describe('Routes: Protocols', () => {
       id: 1,
       title: 'Test Protocol',
       description: 'Default Protocol Description',
-      creatorId: 1,
+      CreatorId: 1,
     },
     {
       id: 2,
       title: 'Test Protocol 2',
       description: 'Test Protocol 2 Description',
-      creatorId: 1,
+      CreatorId: 1,
     },
     {
       id: 3,
       title: 'Test Protocol 3',
       description: 'Test Protocol 3 Description',
-      creatorId: 1,
+      CreatorId: 1,
     },
   ];
 
-  beforeEach((done) => {
-    Users.destroy({ where: {} })
-      .then(() => Users.create({
-        id: 1,
-        name: 'John Doe',
-        email: 'johndoe@email.com',
-        password: '12345',
-      }))
-      .then(user => Protocols.destroy({ where: {} })
-        .then(() => Protocols.bulkCreate(protocolList)
-          .then(() => {
-            token = jwt.encode({ id: user.id }, jwtSecret);
-            done();
-          })));
-  });
-  afterEach((done) => {
-    Users.destroy({ where: {} })
-      .then(() => Protocols.destroy({ where: {} })
-        .then(() => done()));
-  });
+  before(() => app.datasource.sequelize.sync());
+  beforeEach(() => Protocols.destroy({ where: {} })
+    .then(() => Keywords.destroy({ where: {} })
+      .then(() => Users.destroy({ where: {} })
+        .then(() => Users.create({
+          id: 1,
+          name: 'John Doe',
+          email: 'johndoe@email.com',
+          password: '12345',
+        })
+          .then(user => Protocols.bulkCreate(protocolList)
+            .then(() => {
+              token = jwt.encode({ id: user.id }, jwtSecret);
+            }))))));
+
 
   describe('Route GET /protocols', () => {
     it('should return a list of all protocols', (done) => {
@@ -93,7 +89,7 @@ describe('Routes: Protocols', () => {
         id: 4,
         title: 'New Protocol',
         description: 'New Protocol Description',
-        creatorId: 1,
+        CreatorId: 1,
       };
       request
         .post('/protocols')
@@ -107,6 +103,73 @@ describe('Routes: Protocols', () => {
           done(err);
         });
     });
+
+    it('should create a protocol with keywords', (done) => {
+      const newProtocol = {
+        id: 4,
+        title: 'New Protocol',
+        description: 'New Protocol Description',
+        CreatorId: 1,
+        Keywords: [1, 2],
+      };
+      const newKeywords = [{
+        id: 1,
+        word: 'Keyword 1',
+        color: '#000001',
+      }, {
+        id: 2,
+        word: 'Keyword 2',
+        color: '#000002',
+      }];
+      Keywords.bulkCreate(newKeywords)
+        .then(() => {
+          request
+          .post('/protocols')
+          .set('Authorization', `JWT ${token}`)
+          .send(newProtocol)
+          .end((err, res) => {
+            expect(res.body.id).to.be.eql(newProtocol.id);
+            expect(res.body.title).to.be.eql(newProtocol.title);
+            expect(res.body.description).to.be.eql(newProtocol.description);
+            expect(res.body.creatorId).to.be.eql(newProtocol.creatorId);
+            expect(res.body.Keywords[0].KeywordId).to.be.eql(1);
+            expect(res.body.Keywords[1].KeywordId).to.be.eql(2);
+            done(err);
+          });
+        });
+    });
+
+    /* it('should add keywords to protocol', (done) => {
+      const newKeywords = [{
+        id: 2,
+        word: 'Keyword 1',
+        color: '#000001',
+      },{
+        id: 3,
+        word: 'Keyword 2',
+        color: '#000002',
+      }];
+      const addKeywords = [ 2, 3 ];
+      Keywords.bulkCreate(newKeywords)
+        .then(() => {
+
+          request
+          .post('/protocols/1/keywords')
+          .set('Authorization', `JWT ${token}`)
+          .send(addKeywords)
+          .end((err, res) => {
+            console.log(res.body);
+            console.log(res.body.Keywords);
+            expect(res.body.id).to.be.eql(protocolList[0].id);
+            expect(res.body.title).to.be.eql(protocolList[0].title);
+            expect(res.body.description).to.be.eql(protocolList[0].description);
+            expect(res.body.creatorId).to.be.eql(protocolList[0].creatorId);
+            expect(res.body.Keywords[0].KeywordId).to.be.eql(1);
+            expect(res.body.Keywords[1].KeywordId).to.be.eql(2);
+            done(err);
+          });
+        });
+    }); */
   });
 
   describe('Route PUT /protocols/{id}', () => {

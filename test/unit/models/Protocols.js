@@ -1,28 +1,25 @@
-describe('Models: Protocols', () => {
+describe('Models: Protocols.', () => {
   const Protocols = app.datasource.models.Protocols;
   const Materials = app.datasource.models.Materials;
-  const Reagents = app.datasource.models.Reagents;
+  const Equipments = app.datasource.models.Equipments;
   const Keywords = app.datasource.models.Keywords;
-  const Articles = app.datasource.models.Articles;
+  const References = app.datasource.models.References;
   const Steps = app.datasource.models.Steps;
   const Users = app.datasource.models.Users;
 
-  before(() => {
-    return app.datasource.sequelize.sync();
-  });
-  beforeEach(() => {
-    return Protocols.destroy({ where: {} })
-      .then(() => Materials.destroy({ where: {} })
-        .then(() => Reagents.destroy({ where: {} })
-          .then(() => Keywords.destroy({ where: {} })
-            .then(() => Articles.destroy({ where: {} })
-              .then(() => Users.destroy({ where: {} })
-                .then(() => Steps.destroy({ where: {} })))))));
-  });
+  before(() => app.datasource.sequelize.sync());
+  beforeEach(() => Protocols.destroy({ where: {} })
+    .then(() => Materials.destroy({ where: {} })
+      .then(() => Equipments.destroy({ where: {} })
+        .then(() => Keywords.destroy({ where: {} })
+          .then(() => References.destroy({ where: {} })
+            .then(() => Users.destroy({ where: {} })
+              .then(() => Steps.destroy({ where: {} }))))))));
 
   describe('Create a Protocol:', () => {
     it('should not create a Protocol if dont have required field title', () => {
       const testProtocol = {
+        id: 1,
         description: 'Test Protocol Description',
       };
       return Protocols.create(testProtocol)
@@ -35,6 +32,7 @@ describe('Models: Protocols', () => {
 
     it('should not create a Protocol if dont have required field description', () => {
       const testProtocol = {
+        id: 1,
         title: 'Test Protocol',
       };
       return Protocols.create(testProtocol)
@@ -101,11 +99,21 @@ describe('Models: Protocols', () => {
   describe('Protocol Associations:', () => {
     it('check if a protocol has add/get/set/has properties defined for all associations', () => {
       const testProtocol = {
+        id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
       };
       return Protocols.create(testProtocol)
         .then((response) => {
+          // USER -> CREATOR
+          expect(response).to.not.have.property('addCreator');
+          expect(response).to.not.have.property('addCreators');
+          expect(response).to.have.property('getCreator');
+          expect(response).to.not.have.property('getCreators');
+          expect(response).to.have.property('setCreator');
+          expect(response).to.not.have.property('setCreators');
+          expect(response).to.not.have.property('hasCreator');
+          expect(response).to.not.have.property('hasCreators');
           // MATERIALS
           expect(response).to.have.property('addMaterial');
           expect(response).to.have.property('addMaterials');
@@ -116,14 +124,14 @@ describe('Models: Protocols', () => {
           expect(response).to.have.property('hasMaterial');
           expect(response).to.have.property('hasMaterials');
           // REAGENTS
-          expect(response).to.have.property('addReagent');
-          expect(response).to.have.property('addReagents');
-          expect(response).to.not.have.property('getReagent');
-          expect(response).to.have.property('getReagents');
-          expect(response).to.not.have.property('setReagent');
-          expect(response).to.have.property('setReagents');
-          expect(response).to.have.property('hasReagent');
-          expect(response).to.have.property('hasReagents');
+          expect(response).to.have.property('addEquipment');
+          expect(response).to.have.property('addEquipments');
+          expect(response).to.not.have.property('getEquipment');
+          expect(response).to.have.property('getEquipments');
+          expect(response).to.not.have.property('setEquipment');
+          expect(response).to.have.property('setEquipments');
+          expect(response).to.have.property('hasEquipment');
+          expect(response).to.have.property('hasEquipments');
           // STEPS
           expect(response).to.have.property('addStep');
           expect(response).to.have.property('addSteps');
@@ -143,14 +151,14 @@ describe('Models: Protocols', () => {
           expect(response).to.have.property('hasKeyword');
           expect(response).to.have.property('hasKeywords');
           // ARTICLE
-          expect(response).to.not.have.property('addArticle');
-          expect(response).to.not.have.property('addArticles');
-          expect(response).to.have.property('getArticle');
-          expect(response).to.not.have.property('getArticles');
-          expect(response).to.have.property('setArticle');
-          expect(response).to.not.have.property('setArticles');
-          expect(response).to.not.have.property('hasArticle');
-          expect(response).to.not.have.property('hasArticles');
+          expect(response).to.have.property('addReference');
+          expect(response).to.have.property('addReferences');
+          expect(response).to.not.have.property('getReference');
+          expect(response).to.have.property('getReferences');
+          expect(response).to.not.have.property('setReference');
+          expect(response).to.have.property('setReferences');
+          expect(response).to.have.property('hasReference');
+          expect(response).to.have.property('hasReferences');
           // COMMENTS
           expect(response).to.have.property('addComment');
           expect(response).to.have.property('addComments');
@@ -168,43 +176,29 @@ describe('Models: Protocols', () => {
         id: 1,
         title: 'Test Protocol',
         description: 'Test Protocol Description',
-        Creator: {
-          name: 'Test User',
-          email: 'user1@email.com',
-          password: 'test1',
-        },
-        Article: {
-          authors: 'LENNINGHER',
-        },
-        Keywords: [{
-          word: 'Keyword 1',
-        },{
-          word: 'Keyword 2',
-        }],
-        Materials: [{
-          name: 'Material 1',
-          description: 'Material Description 1',
-          ProtocolMaterials: {quantity: 2},
+        Steps: [{
+          id: 1,
+          number: 1,
+          description: 'Firstly do...',
+        }, {
+          id: 2,
+          number: 2,
+          description: 'Then do...',
+        }, {
+          id: 3,
+          number: 3,
+          description: 'Finally do...',
         }],
       };
-      console.log(JSON.stringify(testProtocol));
-      var includes = { include: [{association: Protocols.Reagents}] };
-      return Protocols.create(testProtocol, includes)
+      return Protocols.create(testProtocol, { include: ['Steps'] })
         .then((response) => {
-          console.log(JSON.stringify(response));
           expect(response.id).to.be.eql(testProtocol.id);
           expect(response.title).to.be.eql(testProtocol.title);
           expect(response.description).to.be.eql(testProtocol.description);
-          //expect(response.Creator.name).to.be.eql(testProtocol.Creator.name);
-          //expect(response.Keywords).to.be.an('array');
-          //expect(response.Article.authors).to.be.eql(testProtocol.Article.authors);
-          expect(response.createdAt).to.be.a('Date');
-          expect(response.updatedAt).to.be.a('Date');
-        })
-        .then(() => Reagents.findAll()
-          .then((resp) => {
-            console.log(JSON.stringify(resp));
-          }));
+          expect(response.Steps[0].description).to.be.eql(testProtocol.Steps[0].description);
+          expect(response.Steps[1].description).to.be.eql(testProtocol.Steps[1].description);
+          expect(response.Steps[2].description).to.be.eql(testProtocol.Steps[2].description);
+        });
     });
   });
 });

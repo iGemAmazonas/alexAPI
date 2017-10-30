@@ -5,6 +5,13 @@ export default (sequelize, DataType) => {
       primaryKey: true,
       autoIncrement: true,
     },
+    number: {
+      type: DataType.STRING,
+      allowNull: false,
+      validade: {
+        notEmpty: true,
+      },
+    },
     description: {
       type: DataType.TEXT,
       allowNull: false,
@@ -15,12 +22,16 @@ export default (sequelize, DataType) => {
   });
 
   Steps.associate = (models) => {
-    // 1:N -> A project has one creator and a user may have many projects
-    models.Steps.Creator = models.Steps.belongsTo(models.Users, { as: 'Creator' });
-    models.Users.Steps = models.Users.hasMany(Steps, { foreignKey: 'CreatorId' });
-    // 1:N
-    models.Steps.Protocol = models.Steps.belongsTo(models.Protocols);
-    models.Protocols.Steps = models.Protocols.hasMany(models.Steps, { foreignKey: 'ProtocolId' });
+    // 1:N -> Creates an attribute CreatorId in table Steps
+    // Define get/set Creator methods in a step instance
+    // Define add/get/set/has Steps methods in an user instance
+    models.Steps.belongsTo(models.Users, { as: 'Creator' });
+    models.Users.hasMany(models.Steps, { foreignKey: 'CreatorId' });
+    // 1:N -> Creates an attribute ProtocolId in table Steps
+    // Define get/set Protocol methods in a step instance
+    // Define add/get/set/has Steps methods in a protocol instance
+    models.Steps.belongsTo(models.Protocols);
+    models.Protocols.hasMany(models.Steps);
   };
 
   return Steps;
