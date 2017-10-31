@@ -59,7 +59,12 @@ class BaseController {
 
   delete(filters) {
     return this.Model.destroy(filters)
-      .then(result => BaseController.defaultResponse(result, HttpStatus.NO_CONTENT))
+      .then((result) => {
+        if (!result) {
+          return BaseController.errorResponse(result, HttpStatus.FORBIDDEN);
+        }
+        return BaseController.defaultResponse(result, HttpStatus.NO_CONTENT);
+      })
       .catch(error => BaseController.errorResponse(error.message, HttpStatus.UNPROCESSABLE_ENTITY));
   }
 }

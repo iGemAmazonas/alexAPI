@@ -37,7 +37,7 @@ class ProtocolsController extends BaseController {
     try {
       return super.update(
         ProtocolsController.sanitize(data),
-        { where: ProtocolsController.sanitize(params), include: ['Steps'] });
+        { where: ProtocolsController.sanitize(params) });
     } catch (error) {
       return BaseController.returnErrorResponsePromise(error);
     }

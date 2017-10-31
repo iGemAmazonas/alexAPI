@@ -110,7 +110,7 @@ describe('Controllers: Protocols.', () => {
         title: 'Test Protocol Updated',
         description: 'Test Protocol Description',
       }];
-      td.when(Protocols.update(requestBody, { where: { id: 1 }, include: ['Steps'] })).thenResolve(expectedResponse);
+      td.when(Protocols.update(requestBody, { where: { id: 1 } })).thenResolve(expectedResponse);
       const protocolsController = new ProtocolsController(Protocols);
       return protocolsController.update(requestBody, { id: 1 })
         .then((response) => {

@@ -32,6 +32,7 @@ export default(app) => {
   }
 
   function createRoute(req, res) {
+    req.body.CreatorId = req.user.id;
     protocolsController.create(req.body)
       .then(resProtocols => protocolMaterialsController.create(req.body, resProtocols)
         .then(resMaterials => protocolEquipmentsController.create(req.body, resMaterials)
@@ -41,16 +42,19 @@ export default(app) => {
   }
 
   function updateRoute(req, res) {
+    req.params.CreatorId = req.user.id;
     protocolsController.update(req.body, req.params)
       .then(response => setResponse(response, res));
   }
 
   function deleteRoute(req, res) {
+    req.params.CreatorId = req.user.id;
     protocolsController.delete(req.params)
       .then(response => res.sendStatus(response.statusCode));
   }
 
   function createProtocolSteps(req, res) {
+    req.params.CreatorId = req.user.id;
     protocolsController.findById(req.params)
       .then((response) => {
         protocolStepsController.create(req.body, response)
@@ -59,6 +63,7 @@ export default(app) => {
   }
 
   function createProtocolComments(req, res) {
+    req.params.CreatorId = req.user.id;
     protocolsController.findById(req.params)
       .then((response) => {
         protocolCommentsController.create(req.body, response)
@@ -67,6 +72,7 @@ export default(app) => {
   }
 
   function createProtocolReferences(req, res) {
+    req.params.CreatorId = req.user.id;
     protocolsController.findById(req.params)
       .then((response) => {
         protocolReferencesController.create(req.body, response)
@@ -75,6 +81,7 @@ export default(app) => {
   }
 
   function createProtocolKeywords(req, res) {
+    req.params.CreatorId = req.user.id;
     protocolsController.findById(req.params)
       .then((response) => {
         protocolKeywordsController.create(req.body, response)
@@ -83,6 +90,7 @@ export default(app) => {
   }
 
   function createProtocolEquipments(req, res) {
+    req.params.CreatorId = req.user.id;
     protocolsController.findById(req.params)
       .then((response) => {
         protocolEquipmentsController.create(req.body, response)
@@ -91,6 +99,7 @@ export default(app) => {
   }
 
   function createProtocolMaterials(req, res) {
+    req.params.CreatorId = req.user.id;
     protocolsController.findById(req.params)
       .then((response) => {
         protocolMaterialsController.create(req.body, response)
@@ -104,14 +113,13 @@ export default(app) => {
 
   app.route('/protocols/:id')
     .get(getByIdRoute)
-    .all(app.auth.authenticate())
-    .put(updateRoute)
-    .delete(deleteRoute);
+    .put(app.auth.authenticate(), updateRoute)
+    .delete(app.auth.authenticate(), deleteRoute);
 
-  app.post('/protocols/:id/steps', createProtocolSteps);
-  app.post('/protocols/:id/comments', createProtocolComments);
-  app.post('/protocols/:id/keywords', createProtocolKeywords);
-  app.post('/protocols/:id/references', createProtocolReferences);
-  app.post('/protocols/:id/equipments', createProtocolEquipments);
-  app.post('/protocols/:id/materials', createProtocolMaterials);
+  app.post('/protocols/:id/steps', app.auth.authenticate(), createProtocolSteps);
+  app.post('/protocols/:id/comments', app.auth.authenticate(), createProtocolComments);
+  app.post('/protocols/:id/keywords', app.auth.authenticate(), createProtocolKeywords);
+  app.post('/protocols/:id/references', app.auth.authenticate(), createProtocolReferences);
+  app.post('/protocols/:id/equipments', app.auth.authenticate(), createProtocolEquipments);
+  app.post('/protocols/:id/materials', app.auth.authenticate(), createProtocolMaterials);
 };
