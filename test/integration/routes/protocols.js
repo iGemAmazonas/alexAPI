@@ -1,6 +1,7 @@
 import HttpStatus from 'http-status';
 import jwt from 'jwt-simple';
 
+
 describe('Routes: Protocols.', () => {
   const Protocols = app.datasource.models.Protocols;
   const Keywords = app.datasource.models.Keywords;
@@ -23,7 +24,7 @@ describe('Routes: Protocols.', () => {
   }, {
     id: 3,
     title: 'Test Protocol 3',
-    description: 'Test Genomic 3 Description',
+    description: 'Test Genome 3 Description',
     CreatorId: 2,
     Steps: ['Step 3'],
   }];
@@ -80,6 +81,7 @@ describe('Routes: Protocols.', () => {
       request
         .get('/protocols')
         .end((err, res) => {
+          expect(res.statusCode).to.be.eql(HttpStatus.OK);
           expect(res.body.length).to.be.eql(3);
           expect(res.body[0].id).to.be.eql(protocolList[0].id);
           expect(res.body[0].title).to.be.eql(protocolList[0].title);
@@ -97,11 +99,11 @@ describe('Routes: Protocols.', () => {
         });
     });
 
-    /* it('should return a list of all protocols with filter', (done) => {
+    it('should return a list of all protocols with filter', (done) => {
       request
-        .get("/protocols?filter='genomic'")
-        .set('Authorization', `JWT ${token}`)
+        .get("/protocols?filter=genomic")
         .end((err, res) => {
+          expect(res.statusCode).to.be.eql(HttpStatus.OK);
           expect(res.body.length).to.be.eql(1);
           expect(res.body[0].id).to.be.eql(protocolList[1].id);
           expect(res.body[0].title).to.be.eql(protocolList[1].title);
@@ -109,7 +111,7 @@ describe('Routes: Protocols.', () => {
           expect(res.body[0].creatorId).to.be.eql(protocolList[1].creatorId);
           done(err);
         });
-    }); */
+    });
   });
 
   describe('Route GET /protocols/{id}', () => {
@@ -117,6 +119,7 @@ describe('Routes: Protocols.', () => {
       request
         .get('/protocols/1')
         .end((err, res) => {
+          expect(res.statusCode).to.be.eql(HttpStatus.OK);
           expect(res.body.id).to.be.eql(protocolList[0].id);
           expect(res.body.title).to.be.eql(protocolList[0].title);
           expect(res.body.description).to.be.eql(protocolList[0].description);
@@ -127,6 +130,21 @@ describe('Routes: Protocols.', () => {
   });
 
   describe('Route POST /protocols', () => {
+    it('should give authorization error on create a protocol without credentials', (done) => {
+      const newProtocol = {
+        id: 4,
+        title: 'New Protocol',
+        description: 'New Protocol Description',
+      };
+      request
+        .post('/protocols')
+        .send(newProtocol)
+        .end((err, res) => {
+          expect(res.statusCode).to.be.eql(HttpStatus.UNAUTHORIZED);
+          done(err);
+        });
+    });
+
     it('should create a protocol', (done) => {
       const newProtocol = {
         id: 4,
@@ -138,6 +156,7 @@ describe('Routes: Protocols.', () => {
         .set('Authorization', `JWT ${token}`)
         .send(newProtocol)
         .end((err, res) => {
+          expect(res.statusCode).to.be.eql(HttpStatus.CREATED);
           expect(res.body.id).to.be.eql(newProtocol.id);
           expect(res.body.title).to.be.eql(newProtocol.title);
           expect(res.body.description).to.be.eql(newProtocol.description);
@@ -159,6 +178,7 @@ describe('Routes: Protocols.', () => {
       .set('Authorization', `JWT ${token}`)
       .send(newProtocol)
       .end((err, res) => {
+        expect(res.statusCode).to.be.eql(HttpStatus.CREATED);
         expect(res.body.id).to.be.eql(newProtocol.id);
         expect(res.body.title).to.be.eql(newProtocol.title);
         expect(res.body.description).to.be.eql(newProtocol.description);
@@ -214,6 +234,7 @@ describe('Routes: Protocols.', () => {
         .set('Authorization', `JWT ${token}`)
         .send(updatedProtocol)
         .end((err, res) => {
+          expect(res.statusCode).to.be.eql(HttpStatus.OK);
           expect(res.body).to.be.eql([1]);
           done(err);
         });

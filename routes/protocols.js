@@ -22,7 +22,7 @@ export default(app) => {
   const protocolStepsController = new ProtocolStepsController();
 
   function getAllRoute(req, res) {
-    protocolsController.findAllByFilters(req.params)
+    protocolsController.findAllByFilters(req.query)
       .then(response => setResponse(response, res));
   }
 

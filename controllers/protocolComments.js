@@ -1,3 +1,4 @@
+import HttpStatus from 'http-status';
 import BaseController from './bases';
 import CommentsController from './comments';
 
@@ -15,7 +16,7 @@ class ProtocolCommentsController {
           .then((result) => {
             const newProtocol = JSON.parse(JSON.stringify(protocol));
             newProtocol.Comments = result[0];
-            return BaseController.defaultResponse(newProtocol);
+            return BaseController.defaultResponse(newProtocol, HttpStatus.CREATED);
           });
       }
     } catch (error) {

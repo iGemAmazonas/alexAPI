@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize';
 import BaseController from './bases';
 
 
@@ -5,11 +6,32 @@ class ProtocolsController extends BaseController {
 
   static sanitize(params) {
     return BaseController.sanitize(params);
+    this.allAssociations =  ['Keywords', 'Materials', 'Equipments', 'Steps', 'References', 'Comments'];
   }
 
-  findAllByFilters(params) {
+  mountFilterQuery(query) {
+    var filter = {};
+    if(query && query.filter) {
+      filter = {
+        $or: {
+          title: {
+            $like: '%' + query.filter + '%',
+          },
+          description: {
+            $like: '%' + query.filter + '%',
+          },
+        },
+      };
+    }
+    return filter;
+  }
+
+  findAllByFilters(query) {
     try {
-      return super.findAllByFilters({ where: ProtocolsController.sanitize(params) });
+      return super.findAllByFilters({
+        //attributes: ['id','title','description'],
+        where: this.mountFilterQuery(query),
+        include:  this.allAssociations });
     } catch (error) {
       return BaseController.returnErrorResponsePromise(error);
     }
@@ -19,7 +41,7 @@ class ProtocolsController extends BaseController {
     try {
       return super.findById({
         where: ProtocolsController.sanitize(params),
-        include: ['Keywords', 'Materials', 'Equipments', 'Steps', 'References', 'Comments'] });
+        include: this.allAssociations });
     } catch (error) {
       return BaseController.returnErrorResponsePromise(error);
     }

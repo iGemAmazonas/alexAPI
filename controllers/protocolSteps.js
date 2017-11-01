@@ -1,3 +1,4 @@
+import HttpStatus from 'http-status';
 import BaseController from './bases';
 import StepsController from './steps';
 
@@ -15,7 +16,7 @@ class ProtocolStepsController {
           .then((result) => {
             const newProtocol = JSON.parse(JSON.stringify(protocol));
             newProtocol.Steps = result[0];
-            return BaseController.defaultResponse(newProtocol);
+            return BaseController.defaultResponse(newProtocol, HttpStatus.CREATED);
           });
       }
     } catch (error) {
